@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
+
+@layer components {
+  .input-login {
+    @apply w-full max-w-sm focus-visible:outline-none text-description rounded-md p-3 bg-group border border-gray-500 placeholder:text-gray-500;
+  }
+
+  .button-login {
+    @apply w-full max-w-sm bg-group rounded-md p-3 text-gray-500;
+  }
+}

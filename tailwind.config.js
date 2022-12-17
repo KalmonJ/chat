@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -19,6 +16,9 @@ module.exports = {
         placeholder: "#9BABC5",
         description: "#F2F2F2",
         name: "#E9E9E9",
+      },
+      boxShadow: {
+        login: "-5px 5px 15px 25px rgba(0, 0, 0, 0.3)",
       },
       fontFamily: {
         "DM-Sans": ["DM Sans", "sans-serif"],
