@@ -1,3 +1,5 @@
+import { Header } from "components/common/Header";
+import { Input } from "components/common/Input";
 import { NextPageContext } from "next";
 import { User, UserService } from "services/UserService";
 
@@ -16,9 +18,9 @@ export function getServerSideProps(ctx: NextPageContext) {
 
 export const Chat = (props: ChatPageProps) => {
   return (
-    <h1>
-      {props.currentUser.username} id: {props.currentUser.uid}
-    </h1>
+    <>
+      <Header />
+    </>
   );
 };
 

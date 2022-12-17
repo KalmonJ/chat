@@ -11,4 +11,8 @@
   .button-login {
     @apply w-full max-w-sm bg-group rounded-md p-3 text-gray-500;
   }
+
+  .input-header {
+    @apply bg-bg-input rounded-[7px] h-[44px] max-w-[290px] w-full focus-visible:outline-none px-3 text-description;
+  }
 }

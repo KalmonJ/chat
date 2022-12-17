@@ -16,7 +16,19 @@ module.exports = {
         placeholder: "#9BABC5",
         description: "#F2F2F2",
         name: "#E9E9E9",
+        "bg-input": "#050505",
       },
+
+      keyframes: {
+        "slide-down": {
+          "0%": { opacity: 0, transform: "translateY(-10px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "slide-down": "slide-down 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+
       boxShadow: {
         login: "-5px 5px 15px 25px rgba(0, 0, 0, 0.3)",
       },
