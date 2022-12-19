@@ -17,6 +17,7 @@ module.exports = {
         description: "#F2F2F2",
         name: "#E9E9E9",
         "bg-input": "#050505",
+        hour: "#A9ABAD",
       },
 
       keyframes: {
