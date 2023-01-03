@@ -50,6 +50,7 @@ export const useForm = <S extends Login | Register>(initialState: S) => {
       return true;
     }
 
+    setError("");
     return false;
   };
 

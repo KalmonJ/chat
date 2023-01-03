@@ -6,9 +6,9 @@ interface AvatarFromMessageProps extends Pick<User, "username"> {
   text: string;
 }
 
-export const AvatarFromMessage = () => {
+export const AvatarFromMessages = () => {
   return (
-    <div className="flex items-center" role="button">
+    <div className="flex items-center">
       <div className="mr-2">
         <Avatar />
       </div>

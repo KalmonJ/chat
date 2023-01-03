@@ -17,7 +17,6 @@ export const AuthService = {
           throw new Error(user.error);
         }
 
-        console.log(user, "usuário");
         TokenService.save(null, user);
         return user;
       })
