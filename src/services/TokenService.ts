@@ -12,7 +12,7 @@ export const TokenService = {
 
   get(ctx: TokenServiceContext = null) {
     const cookies = nookies.get(ctx);
-    return JSON.parse(cookies.client);
+    return JSON.parse(cookies.client ?? {});
   },
 
   destroy(ctx: TokenServiceContext) {

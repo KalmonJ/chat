@@ -6,7 +6,7 @@ import { NextPageContext } from "next";
 import { useEffect } from "react";
 import { MessageService } from "services/MessageService";
 import { User, UserService } from "services/UserService";
-import { useUser as updateUser, useUser } from "./../hooks/useUser";
+import { useUser } from "./../hooks/useUser";
 
 interface ChatPageProps {
   currentUser: User;
@@ -40,7 +40,7 @@ export const Chat = (props: ChatPageProps) => {
       <div className="flex">
         <Navbar />
         <div className="w-full flex">
-          <MessagesList conversations={props.conversations} />
+          <MessagesList conversations={props?.conversations} />
           <MessagesView />
         </div>
       </div>

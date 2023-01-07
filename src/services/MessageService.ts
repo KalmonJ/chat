@@ -9,4 +9,15 @@ export const MessageService = {
         return error;
       });
   },
+
+  async getMessages(conversationId: string) {
+    return fetch(`http://localhost:8080/messages/${conversationId}`)
+      .then(async (result) => {
+        const apiResponse = await result.json();
+        return apiResponse;
+      })
+      .catch((error) => {
+        return error;
+      });
+  },
 };
