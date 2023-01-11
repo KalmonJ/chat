@@ -7,6 +7,7 @@ export interface User {
   username: string;
   email: string;
   uid: string;
+  profileImage: string;
 }
 
 export const UserService = {

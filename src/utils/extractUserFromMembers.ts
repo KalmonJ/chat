@@ -4,6 +4,7 @@ export type UserCoversation = {
   _id: string;
   username: string;
   email: string;
+  profileImage: string;
 };
 
 export const extractUserFromMembers = (

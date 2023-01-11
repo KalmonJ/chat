@@ -9,7 +9,7 @@ export const AvatarFromMessages = ({ member }: AvatarFromMessagesProps) => {
   return (
     <div className="flex items-center">
       <div className="mr-2">
-        <Avatar />
+        <Avatar profileImage={member.profileImage} username={member.username} />
       </div>
       <div className="flex flex-col gap-1 grow mr-4">
         <h4 className="text-white font-DM-Sans font-bold text-base leading-4">
