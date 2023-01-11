@@ -7,9 +7,9 @@ import { useUser } from "./../../hooks/useUser";
 
 export const MessagesView = () => {
   const [message, setMessage] = useState("");
+  const { socket } = useSocket();
   const user = useUser((state) => state.user);
   const conversationId = useConversationId((state) => state.conversationId);
-  const { socket } = useSocket();
   const messages = useMessages((state) => state.messages);
   const saveMessages = useMessages((state) => state.setMessages);
 
@@ -28,6 +28,16 @@ export const MessagesView = () => {
 
     setMessage("");
   };
+
+  if (!messages.length) {
+    return (
+      <div className="bg-group min-w-[600px] flex justify-center items-center w-full h-full flex-col">
+        <h3 className="text-white text-center absolute text-3xl">
+          Select a channel and start new chat...
+        </h3>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-group min-w-[600px] flex justify-start w-full h-full flex-col">
