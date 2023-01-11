@@ -1,12 +1,11 @@
 import { Avatar } from "components/common/Avatar";
-import { User } from "services/UserService";
+import { UserCoversation } from "utils/extractUserFromMembers";
 
-interface AvatarFromMessageProps extends Pick<User, "username"> {
-  profileImg: string;
-  text: string;
+export interface AvatarFromMessagesProps {
+  member: UserCoversation;
 }
 
-export const AvatarFromMessages = () => {
+export const AvatarFromMessages = ({ member }: AvatarFromMessagesProps) => {
   return (
     <div className="flex items-center">
       <div className="mr-2">
@@ -14,7 +13,7 @@ export const AvatarFromMessages = () => {
       </div>
       <div className="flex flex-col gap-1 grow mr-4">
         <h4 className="text-white font-DM-Sans font-bold text-base leading-4">
-          Killan James
+          {member.username}
         </h4>
         <span className="text-typing font-DM-Sans font-normal text-sm leading-4">
           Typing...

@@ -3,6 +3,8 @@ import { AvatarFromMessages } from "./AvatarFromMessage";
 import { useConversationId } from "./../../hooks/useConversationId";
 import { MessageService } from "services/MessageService";
 import { useMessages } from "hooks/useMessages";
+import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
+import { useUser } from "hooks/useUser";
 
 export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   const setConversationId = useConversationId(
@@ -17,12 +19,19 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
     saveMessages(messages);
   };
 
+  const userLogged = useUser((state) => state.user);
+
   return (
     <div className="flex flex-col justify-center items-center p-6 max-w-[333px] w-full bg-messages">
       <div className="h-[750px] w-full flex flex-col gap-6">
         <h3 className="font-bold font-DM-Sans text-3xl text-white">Messages</h3>
         <Input placeholder="Search..." />
         {conversations?.map((conversation) => {
+          const [member] = extractUserFromMembers(
+            conversation.members,
+            userLogged
+          );
+
           return (
             <div
               key={conversation._id}
@@ -30,7 +39,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
                 handleClickChat(conversation._id);
               }}
             >
-              <AvatarFromMessages key={conversation._id} />
+              <AvatarFromMessages member={member} key={conversation._id} />
             </div>
           );
         })}
