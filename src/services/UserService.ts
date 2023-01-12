@@ -16,4 +16,10 @@ export const UserService = {
     const userFromCookies = TokenService.get(ctx);
     return userFromCookies;
   },
+
+  getAllUsers() {
+    return fetch("http://localhost:8080/users")
+      .then(async (result) => await result.json())
+      .catch((error) => error);
+  },
 };

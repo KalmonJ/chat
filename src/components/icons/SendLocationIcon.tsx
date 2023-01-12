@@ -1,4 +1,6 @@
-export const SendLocationIcon = () => {
+import { ComponentPropsWithoutRef } from "react";
+
+export const SendLocationIcon = (props: ComponentPropsWithoutRef<"svg">) => {
   return (
     <svg
       width="19"
@@ -6,6 +8,7 @@ export const SendLocationIcon = () => {
       viewBox="0 0 19 22"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fill-rule="evenodd"

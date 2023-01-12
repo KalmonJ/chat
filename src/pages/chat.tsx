@@ -2,6 +2,7 @@ import { MessagesList } from "components/chat/MessagesList";
 import { MessagesView } from "components/chat/MessagesView";
 import { Header } from "components/common/Header";
 import { Navbar } from "components/common/Navbar";
+import { useAllUsers } from "hooks/useAllUsers";
 import { NextPageContext } from "next";
 import { useEffect } from "react";
 import { MessageService } from "services/MessageService";
@@ -11,14 +12,17 @@ import { useUser } from "./../hooks/useUser";
 interface ChatPageProps {
   currentUser: User;
   conversations: any[];
+  allUsers: User[];
 }
 
 export async function getServerSideProps(ctx: NextPageContext) {
   const currentUser: User = UserService.get(ctx);
   const conversations = await MessageService.getConversations(currentUser.uid);
+  const response = await UserService.getAllUsers();
 
   return {
     props: {
+      allUsers: response.users,
       currentUser,
       conversations,
     },
@@ -27,10 +31,12 @@ export async function getServerSideProps(ctx: NextPageContext) {
 
 export const Chat = (props: ChatPageProps) => {
   const setUser = useUser((state) => state.setUser);
+  const setAllUsers = useAllUsers((state) => state.setAllUsers);
 
   useEffect(() => {
     setUser(props.currentUser);
-  }, [props.currentUser, setUser]);
+    setAllUsers(props.allUsers);
+  }, [props.currentUser, setUser, props.allUsers, setAllUsers]);
 
   return (
     <div className="flex flex-col">

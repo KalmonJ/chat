@@ -1,11 +1,16 @@
-export const SendVoiceMessageIcon = () => {
+import { ComponentPropsWithoutRef } from "react";
+
+export const SendVoiceMessageIcon = (
+  props: ComponentPropsWithoutRef<"svg">
+) => {
   return (
     <svg
-      width="12"
+      width="18"
       height="18"
       viewBox="0 0 12 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fill-rule="evenodd"

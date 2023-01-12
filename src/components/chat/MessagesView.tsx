@@ -1,4 +1,9 @@
 import { Input } from "components/common/Input";
+import { SendDocumentIcon } from "components/icons/SendDocumentIcon";
+import { SendEmojiIcon } from "components/icons/SendEmojiIcon";
+import { SendLocationIcon } from "components/icons/SendLocationIcon";
+import { SendMessageIcon } from "components/icons/SendMessageIcon";
+import { SendVoiceMessageIcon } from "components/icons/SendVoiceMessageIcon";
 import { useConversationId } from "hooks/useConversationId";
 import { useMessages } from "hooks/useMessages";
 import { useEffect, useState } from "react";
@@ -49,23 +54,35 @@ export const MessagesView = () => {
               message.sender === user.uid ? "self-end" : "self-start"
             }`}
           >
-            <span>{message.text}</span>
+            <span className="text-caption font-medium font-DM-Sans text-sm">
+              {message.text}
+            </span>
           </div>
         ))}
       </div>
       <div className="bg-input h-[88px] w-full flex items-center justify-center">
-        <Input
-          className="rounded-[25px] bg-header max-w-[609px] h-[50px] w-full outline-none px-4 text-caption"
-          value={message}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handlePressEnter();
-            }
-          }}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
+        <div className="rounded-[25px] bg-header max-w-[609px] flex items-center h-[50px] w-full outline-none px-4 text-caption">
+          <SendVoiceMessageIcon className="cursor-pointer" />
+          <Input
+            className="rounded-[25px] bg-header max-w-[609px] h-[50px] w-full outline-none px-4 text-caption"
+            value={message}
+            placeholder="Send message..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handlePressEnter();
+              }
+            }}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          />
+          <div className="flex items-center gap-4">
+            <SendDocumentIcon className="cursor-pointer" />
+            <SendEmojiIcon className="cursor-pointer" />
+            <SendMessageIcon className="cursor-pointer" />
+            <SendLocationIcon className="cursor-pointer" />
+          </div>
+        </div>
       </div>
     </div>
   );

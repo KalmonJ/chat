@@ -1,4 +1,6 @@
-export const SendEmojiIcon = () => {
+import { ComponentPropsWithoutRef } from "react";
+
+export const SendEmojiIcon = (props: ComponentPropsWithoutRef<"svg">) => {
   return (
     <svg
       width="20"
@@ -6,6 +8,7 @@ export const SendEmojiIcon = () => {
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         fill-rule="evenodd"
