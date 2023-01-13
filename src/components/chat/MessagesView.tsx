@@ -6,12 +6,13 @@ import { SendMessageIcon } from "components/icons/SendMessageIcon";
 import { SendVoiceMessageIcon } from "components/icons/SendVoiceMessageIcon";
 import { useConversationId } from "hooks/useConversationId";
 import { useMessages } from "hooks/useMessages";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSocket } from "./../../hooks/useSocket";
 import { useUser } from "./../../hooks/useUser";
 import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
+import { Transition } from "react-transition-group";
 
 export const MessagesView = () => {
   const [message, setMessage] = useState("");
@@ -49,7 +50,7 @@ export const MessagesView = () => {
   }
 
   return (
-    <div className="bg-group flex justify-start w-full h-full flex-col">
+    <div className="bg-group flex justify-start w-full h-full flex-col overflow-y-hidden">
       <div className=" w-full overflow-auto mt-[77px] p-12 flex grow h-[500px] flex-col">
         {messages.map((message) => (
           <div
@@ -65,8 +66,22 @@ export const MessagesView = () => {
         ))}
       </div>
       <div className="relative">
-        {openEmoji && (
-          <div className="absolute top-[-450px] right-56">
+        <Transition
+          timeout={500}
+          in={openEmoji}
+          mountOnEnter
+          unmountOnExit
+          addEndListener={(node, done) => {
+            gsap.to(node, {
+              translateY: openEmoji ? undefined : "300px",
+              opacity: openEmoji ? undefined : 0,
+              duration: 0.6,
+              ease: "easeIn",
+              onComplete: done,
+            });
+          }}
+        >
+          <div className="absolute top-[-450px] animate-slide-up right-56">
             <EmojiPicker
               theme={"dark" as Theme.Theme.DARK}
               lazyLoadEmojis
@@ -75,7 +90,8 @@ export const MessagesView = () => {
               }}
             />
           </div>
-        )}
+        </Transition>
+
         <div className="bg-input h-[88px] relative px-7 w-full flex items-center justify-center">
           <div className="rounded-[25px] bg-header px-4 max-w-[609px] flex items-center h-[50px] w-full outline-none text-caption">
             <SendVoiceMessageIcon className="cursor-pointer hidden md:block" />

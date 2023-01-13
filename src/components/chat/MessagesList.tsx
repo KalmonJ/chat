@@ -22,7 +22,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   return (
     <div className="flex flex-col p-1 w-[80px] justify-center items-center md:p-6 max-w-[300px] md:w-full bg-messages">
       <div className="pt-10 sm:pt-10 mt-11 md:mt-0 h-[750px] w-full flex flex-col gap-6">
-        <h3 className=" hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white">
+        <h3 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white">
           Messages
         </h3>
         <div className="hidden md:block">
@@ -49,6 +49,9 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
             </div>
           );
         })}
+        <h2 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white mt-7">
+          Friends
+        </h2>
       </div>
     </div>
   );

@@ -45,7 +45,7 @@ export const Chat = (props: ChatPageProps) => {
       </div>
       <div className="flex">
         <Navbar />
-        <div className="w-full flex">
+        <div className="w-full flex ">
           <MessagesList conversations={props?.conversations} />
           <MessagesView />
         </div>
