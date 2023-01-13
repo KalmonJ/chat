@@ -16,3 +16,7 @@
     @apply bg-bg-input rounded-[7px] h-[44px] max-w-[290px] w-full focus-visible:outline-none px-3 text-description;
   }
 }
+
+.epr-preview {
+  display: none !important;
+}

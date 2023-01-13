@@ -40,7 +40,7 @@ export const Chat = (props: ChatPageProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="absolute w-full">
+      <div className="absolute">
         <Header />
       </div>
       <div className="flex">

@@ -10,7 +10,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   const setConversationId = useConversationId(
     (state) => state.setConversationId
   );
-
+  const userLogged = useUser((state) => state.user);
   const saveMessages = useMessages((state) => state.setMessages);
 
   const handleClickChat = async (conversationId: string) => {
@@ -19,14 +19,16 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
     saveMessages(messages);
   };
 
-  const userLogged = useUser((state) => state.user);
-
   return (
-    <div className="flex flex-col justify-center items-center p-6 max-w-[333px] w-full bg-messages">
-      <div className="h-[750px] w-full flex flex-col gap-6">
-        <h3 className="font-bold font-DM-Sans text-3xl text-white">Messages</h3>
-        <Input placeholder="Search..." />
-        {conversations?.map((conversation) => {
+    <div className="flex flex-col p-1 w-[80px] justify-center items-center md:p-6 max-w-[300px] md:w-full bg-messages">
+      <div className="pt-10 sm:pt-10 mt-11 md:mt-0 h-[750px] w-full flex flex-col gap-6">
+        <h3 className=" hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white">
+          Messages
+        </h3>
+        <div className="hidden md:block">
+          <Input placeholder="Search..." />
+        </div>
+        {conversations?.map((conversation, index) => {
           const [member] = extractUserFromMembers(
             conversation.members,
             userLogged
@@ -39,7 +41,11 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
                 handleClickChat(conversation._id);
               }}
             >
-              <AvatarFromMessages member={member} key={conversation._id} />
+              <AvatarFromMessages
+                conversationId={conversation._id}
+                member={member}
+                key={conversation._id}
+              />
             </div>
           );
         })}

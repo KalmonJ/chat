@@ -9,7 +9,7 @@ export const Header = () => {
   const { handleChange, filteredUsers, search } = useFilteredUsers(allUsers);
 
   return (
-    <header className="bg-header h-[76px] w-full border-b border-group flex justify-end items-center">
+    <header className="bg-header h-[76px] w-screen border-b border-group flex justify-end items-center">
       <div className="flex w-1/2 justify-between p-2 pr-[38px]">
         <div className="flex flex-col">
           <div className="flex items-center bg-[#050505] px-2 rounded-md ">
@@ -17,7 +17,7 @@ export const Header = () => {
             <SearchIcon />
           </div>
           {!!search && (
-            <div className="w-[250px] min-h-[100px] p-2 bg-header absolute bottom-[-95px] rounded-b-md flex flex-col">
+            <div className="w-[250px] min-h-[100px] p-2 bg-header z-50 absolute bottom-[-95px] rounded-b-md flex flex-col">
               {filteredUsers.map((user) => (
                 <span
                   key={user.uid}
