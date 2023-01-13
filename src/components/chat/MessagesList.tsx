@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Input } from "components/common/Input";
 import { AvatarFromMessages } from "./AvatarFromMessage";
 import { useConversationId } from "./../../hooks/useConversationId";
@@ -5,6 +6,8 @@ import { MessageService } from "services/MessageService";
 import { useMessages } from "hooks/useMessages";
 import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
 import { useUser } from "hooks/useUser";
+import { useSocket } from "hooks/useSocket";
+import { useEffect, useState } from "react";
 
 export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   const setConversationId = useConversationId(
@@ -12,12 +15,33 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   );
   const userLogged = useUser((state) => state.user);
   const saveMessages = useMessages((state) => state.setMessages);
+  const [updatedConversation, setUpdatedConversation] =
+    useState<any[]>(conversations);
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    const filterConversations = (data: any) => {
+      const conversationsCopy = [...conversations];
+      const index = conversationsCopy.findIndex(
+        (conversation) => conversation._id === data._id
+      );
+      conversationsCopy[index] = data;
+      setUpdatedConversation(conversationsCopy);
+    };
+
+    socket.on("updatedChannel", (data) => {
+      filterConversations(data);
+    });
+  }, [conversations, socket]);
 
   const handleClickChat = async (conversationId: string) => {
     setConversationId(conversationId);
     const messages = await MessageService.getMessages(conversationId);
     saveMessages(messages);
   };
+
+  console.log(userLogged, "usuário logado");
 
   return (
     <div className="flex flex-col p-1 w-[80px] justify-center items-center md:p-6 max-w-[300px] md:w-full bg-messages">
@@ -28,7 +52,9 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
         <div className="hidden md:block">
           <Input placeholder="Search..." />
         </div>
-        {conversations?.map((conversation, index) => {
+        {updatedConversation?.map((conversation, index) => {
+          console.log(updatedConversation, "updateddd?");
+
           const [member] = extractUserFromMembers(
             conversation.members,
             userLogged
@@ -52,6 +78,22 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
         <h2 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white mt-7">
           Friends
         </h2>
+        <div className="hidden md:block">
+          <Input placeholder="Search..." />
+        </div>
+        {userLogged.friends?.length === 0 ||
+          (!userLogged.friends && (
+            <div>
+              <h2 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-sm text-white mt-7">
+                You don't have any friends yet... 😭
+              </h2>
+            </div>
+          ))}
+        {userLogged?.friends?.map((friend) => (
+          <div key={friend.uid}>
+            <span>{friend.username}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

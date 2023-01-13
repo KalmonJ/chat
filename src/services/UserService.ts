@@ -8,6 +8,7 @@ export interface User {
   email: string;
   uid: string;
   profileImage: string;
+  friends: User[];
 }
 
 export const UserService = {

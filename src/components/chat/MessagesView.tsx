@@ -43,7 +43,7 @@ export const MessagesView = () => {
     return (
       <div className="bg-group flex justify-center items-center w-full h-full flex-col">
         <h3 className="text-white text-center absolute text-3xl">
-          Select a channel and start new chat...
+          Select a channel and start new conversation...
         </h3>
       </div>
     );
@@ -86,7 +86,7 @@ export const MessagesView = () => {
               theme={"dark" as Theme.Theme.DARK}
               lazyLoadEmojis
               onEmojiClick={(e) => {
-                setMessage(e.emoji);
+                setMessage(message.concat(e.emoji));
               }}
             />
           </div>
