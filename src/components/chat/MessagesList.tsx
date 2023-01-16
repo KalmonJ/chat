@@ -9,7 +9,11 @@ import { useUser } from "hooks/useUser";
 import { useSocket } from "hooks/useSocket";
 import { useEffect, useState } from "react";
 
-export const MessagesList = ({ conversations }: { conversations: any[] }) => {
+export const MessagesList = ({
+  conversations,
+}: {
+  conversations: Conversation[];
+}) => {
   const setConversationId = useConversationId(
     (state) => state.setConversationId
   );
@@ -18,22 +22,17 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   const [updatedConversation, setUpdatedConversation] =
     useState<Conversation[]>(conversations);
 
-  const { socket } = useSocket();
+  // const { socket } = useSocket();
 
-  useEffect(() => {
-    const filterConversations = (data: any) => {
-      const conversationsCopy = [...conversations];
-      const index = conversationsCopy.findIndex(
-        (conversation) => conversation._id === data._id
-      );
-      conversationsCopy[index] = data;
-      setUpdatedConversation(conversationsCopy);
-    };
+  // useEffect(() => {
+  //   const filterConversations = (data: any) => {
+  //     setUpdatedConversation([...updatedConversation, data]);
+  //   };
 
-    socket.on("updatedChannel", (data) => {
-      filterConversations(data);
-    });
-  }, [conversations, socket]);
+  //   socket.on("updatedChannel", (data) => {
+  //     filterConversations(data);
+  //   });
+  // }, [conversations, socket, updatedConversation]);
 
   const handleClickChat = async (conversationId: string) => {
     setConversationId(conversationId);
@@ -66,7 +65,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
       ]);
     }
 
-    handleClickChat(conversationFind._id as string);
+    handleClickChat(conversationFind._id);
   };
 
   return (
@@ -78,9 +77,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
         <div className="hidden md:block">
           <Input placeholder="Search..." />
         </div>
-        {updatedConversation?.map((conversation, index) => {
-          console.log(updatedConversation, "updateddd?");
-
+        {updatedConversation?.map((conversation) => {
           const [member] = extractUserFromMembers(
             conversation.members,
             userLogged
@@ -92,6 +89,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
               onClick={() => {
                 handleClickChat(conversation._id);
               }}
+              className="cursor-pointer"
             >
               <AvatarFromMessages member={member} key={conversation._id} />
             </div>
@@ -112,14 +110,13 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
             </div>
           ))}
         {userLogged?.friends?.map((friend) => {
-          console.log(friend, "amigo??");
-
           return (
             <div
-              key={friend.uid}
+              key={friend._id}
               onClick={() => {
                 handleClickFriend(friend._id);
               }}
+              className="cursor-pointer"
             >
               <AvatarFromMessages member={friend} />
             </div>

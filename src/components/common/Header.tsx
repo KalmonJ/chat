@@ -6,23 +6,28 @@ import { Menu } from "./Menu";
 import { FaPlus } from "react-icons/fa";
 import { useSocket } from "hooks/useSocket";
 import { useUser } from "hooks/useUser";
+import { TokenService } from "services/TokenService";
 
 export const Header = () => {
-  const allUsers = useAllUsers((state) => state.allUsers);
+  const { allUsers, setAllUsers } = useAllUsers();
+
+  console.log(allUsers, "todos os usuários");
+
   const { handleChange, filteredUsers, search } = useFilteredUsers(allUsers);
 
   const { socket } = useSocket();
   const { user, setUser } = useUser();
 
   const handleClick = (userId: string) => {
-    console.log(userId, "id user");
     socket.emit("addFriends", { addId: userId, loggedUser: user });
     socket.on("updatedUser", (data) => {
       setUser(data.loggedUser);
+      TokenService.save(null, data.loggedUser);
     });
-  };
 
-  console.log(user, "usuário");
+    const updatedAllUsers = allUsers.filter((user) => user._id !== userId);
+    setAllUsers(updatedAllUsers);
+  };
 
   return (
     <header className="bg-header h-[76px] w-screen border-b border-group flex justify-end items-center">

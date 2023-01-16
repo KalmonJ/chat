@@ -1,7 +1,8 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { User } from "services/UserService";
+import { UserCoversation } from "utils/extractUserFromMembers";
 
-export const useFilteredUsers = (users: User[]) => {
+export const useFilteredUsers = (users: UserCoversation[]) => {
   const [search, setSearch] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
 import { Register } from "hooks/useForm";
 import { NextPageContext } from "next";
+import { UserCoversation } from "utils/extractUserFromMembers";
 import { TokenService } from "./TokenService";
 
 export interface User {
@@ -8,7 +9,7 @@ export interface User {
   email: string;
   uid: string;
   profileImage: string;
-  friends: User[];
+  friends: UserCoversation[];
 }
 
 export const UserService = {

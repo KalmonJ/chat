@@ -7,12 +7,13 @@ import { NextPageContext } from "next";
 import { useEffect } from "react";
 import { MessageService } from "services/MessageService";
 import { User, UserService } from "services/UserService";
+import { UserCoversation } from "utils/extractUserFromMembers";
 import { useUser } from "./../hooks/useUser";
 
 interface ChatPageProps {
   currentUser: User;
   conversations: any[];
-  allUsers: User[];
+  allUsers: UserCoversation[];
 }
 
 export async function getServerSideProps(ctx: NextPageContext) {

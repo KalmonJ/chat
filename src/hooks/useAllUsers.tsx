@@ -1,13 +1,14 @@
 import { User } from "services/UserService";
+import { UserCoversation } from "utils/extractUserFromMembers";
 import create from "zustand";
 
 type UseAllUsers = {
-  allUsers: User[];
-  setAllUsers: (allUsers: User[]) => void;
+  allUsers: UserCoversation[];
+  setAllUsers: (allUsers: UserCoversation[]) => void;
 };
 
 export const useAllUsers = create<UseAllUsers>((set) => ({
-  allUsers: [] as User[],
+  allUsers: [] as UserCoversation[],
   setAllUsers: (allUsers) => {
     set(() => ({ allUsers }));
   },
