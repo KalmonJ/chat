@@ -1,18 +1,15 @@
 import { Avatar } from "components/common/Avatar";
 import { useMessages } from "hooks/useMessages";
 import { useEffect } from "react";
+import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
 import { MessageService } from "./../../services/MessageService";
 
 export interface AvatarFromMessagesProps {
-  member: UserCoversation;
-  conversationId: string;
+  member: UserCoversation | User;
 }
 
-export const AvatarFromMessages = ({
-  member,
-  conversationId,
-}: AvatarFromMessagesProps) => {
+export const AvatarFromMessages = ({ member }: AvatarFromMessagesProps) => {
   return (
     <div className="flex items-center">
       <div className="mr-2">
@@ -25,12 +22,9 @@ export const AvatarFromMessages = ({
         <span className="text-typing font-DM-Sans font-normal text-sm leading-4"></span>
       </div>
       <div className="hidden md:flex flex-col gap-1">
-        <span className="text-hour font-DM-Sans font-medium text-xs leading-4">
-          4:30 PM
-        </span>
-        <div className="rounded-full w-4 h-4 bg-notification flex justify-center self-end">
-          <span className="text-xs text-white font-bold font-DM-Sans">2</span>
-        </div>
+        {/* <div className="rounded-full w-4 h-4 bg-notification flex justify-center self-end">
+          <span className="text-xs text-white font-bold font-DM-Sans"></span>
+        </div> */}
       </div>
     </div>
   );

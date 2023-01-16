@@ -39,16 +39,6 @@ export const MessagesView = () => {
     setMessage("");
   };
 
-  if (!messages.length) {
-    return (
-      <div className="bg-group flex justify-center items-center w-full h-full flex-col">
-        <h3 className="text-white text-center absolute text-3xl">
-          Select a channel and start new conversation...
-        </h3>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-group flex justify-start w-full h-full flex-col overflow-y-hidden">
       <div className=" w-full overflow-auto mt-[77px] p-12 flex grow h-[500px] flex-col">

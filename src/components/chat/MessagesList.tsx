@@ -2,7 +2,7 @@
 import { Input } from "components/common/Input";
 import { AvatarFromMessages } from "./AvatarFromMessage";
 import { useConversationId } from "./../../hooks/useConversationId";
-import { MessageService } from "services/MessageService";
+import { Conversation, MessageService } from "services/MessageService";
 import { useMessages } from "hooks/useMessages";
 import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
 import { useUser } from "hooks/useUser";
@@ -16,7 +16,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
   const userLogged = useUser((state) => state.user);
   const saveMessages = useMessages((state) => state.setMessages);
   const [updatedConversation, setUpdatedConversation] =
-    useState<any[]>(conversations);
+    useState<Conversation[]>(conversations);
 
   const { socket } = useSocket();
 
@@ -41,7 +41,33 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
     saveMessages(messages);
   };
 
-  console.log(userLogged, "usuário logado");
+  const handleClickFriend = async (userId: string) => {
+    let chatAlreadyIsOpen = false;
+    let conversationFind = {} as Conversation;
+
+    updatedConversation.map((conversation) => {
+      conversation.members.map((member) => {
+        if (member._id === userId) {
+          chatAlreadyIsOpen = true;
+          conversationFind = conversation;
+        }
+      });
+    });
+
+    if (!chatAlreadyIsOpen) {
+      const createdConversation = await MessageService.createConversation(
+        userId,
+        userLogged.uid
+      );
+
+      return setUpdatedConversation([
+        ...updatedConversation,
+        createdConversation,
+      ]);
+    }
+
+    handleClickChat(conversationFind._id as string);
+  };
 
   return (
     <div className="flex flex-col p-1 w-[80px] justify-center items-center md:p-6 max-w-[300px] md:w-full bg-messages">
@@ -67,11 +93,7 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
                 handleClickChat(conversation._id);
               }}
             >
-              <AvatarFromMessages
-                conversationId={conversation._id}
-                member={member}
-                key={conversation._id}
-              />
+              <AvatarFromMessages member={member} key={conversation._id} />
             </div>
           );
         })}
@@ -89,11 +111,20 @@ export const MessagesList = ({ conversations }: { conversations: any[] }) => {
               </h2>
             </div>
           ))}
-        {userLogged?.friends?.map((friend) => (
-          <div key={friend.uid}>
-            <span>{friend.username}</span>
-          </div>
-        ))}
+        {userLogged?.friends?.map((friend) => {
+          console.log(friend, "amigo??");
+
+          return (
+            <div
+              key={friend.uid}
+              onClick={() => {
+                handleClickFriend(friend._id);
+              }}
+            >
+              <AvatarFromMessages member={friend} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
