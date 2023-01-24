@@ -16,6 +16,7 @@ import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
 import Image from "next/image";
+import { MessageBallon } from "./MessageBallon";
 
 export const MessagesView = () => {
   const [message, setMessage] = useState("");
@@ -67,28 +68,7 @@ export const MessagesView = () => {
     <div className="bg-group flex justify-start w-full h-full flex-col overflow-y-hidden">
       <div className=" w-full overflow-auto mt-[77px] p-12 flex grow h-[500px] flex-col">
         {messages.map((message) => (
-          <div
-            key={message._id}
-            className={`p-4 bg-header mt-1 rounded-lg w-fit ${
-              message.sender === user.uid ? "self-end" : "self-start"
-            }`}
-          >
-            {!!message.text && !message.image && (
-              <span className="text-caption font-medium font-DM-Sans text-sm">
-                {message.text}
-              </span>
-            )}
-
-            {message.image && (
-              <Image
-                src={message.image}
-                width={100}
-                height={100}
-                loading="lazy"
-                alt={message._id}
-              />
-            )}
-          </div>
+          <MessageBallon key={message._id} message={message} user={user} />
         ))}
       </div>
       <div className="relative">

@@ -1,9 +1,6 @@
 import { Avatar } from "components/common/Avatar";
-import { useMessages } from "hooks/useMessages";
-import { useEffect } from "react";
 import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
-import { MessageService } from "./../../services/MessageService";
 
 export interface AvatarFromMessagesProps {
   member: UserCoversation | User;
