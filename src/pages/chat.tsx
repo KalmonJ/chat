@@ -21,8 +21,6 @@ export async function getServerSideProps(ctx: NextPageContext) {
   const conversations = await MessageService.getConversations(currentUser.uid);
   const response = await UserService.getAllUsers();
 
-  console.log(currentUser, "usuário atual");
-
   return {
     props: {
       allUsers: response.users,

@@ -10,9 +10,6 @@ import { TokenService } from "services/TokenService";
 
 export const Header = () => {
   const { allUsers, setAllUsers } = useAllUsers();
-
-  console.log(allUsers, "todos os usuários");
-
   const { handleChange, filteredUsers, search } = useFilteredUsers(allUsers);
 
   const { socket } = useSocket();

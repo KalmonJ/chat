@@ -6,8 +6,7 @@ import { Conversation, MessageService } from "services/MessageService";
 import { useMessages } from "hooks/useMessages";
 import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
 import { useUser } from "hooks/useUser";
-import { useSocket } from "hooks/useSocket";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const MessagesList = ({
   conversations,
@@ -21,18 +20,6 @@ export const MessagesList = ({
   const saveMessages = useMessages((state) => state.setMessages);
   const [updatedConversation, setUpdatedConversation] =
     useState<Conversation[]>(conversations);
-
-  // const { socket } = useSocket();
-
-  // useEffect(() => {
-  //   const filterConversations = (data: any) => {
-  //     setUpdatedConversation([...updatedConversation, data]);
-  //   };
-
-  //   socket.on("updatedChannel", (data) => {
-  //     filterConversations(data);
-  //   });
-  // }, [conversations, socket, updatedConversation]);
 
   const handleClickChat = async (conversationId: string) => {
     setConversationId(conversationId);
@@ -89,7 +76,7 @@ export const MessagesList = ({
               onClick={() => {
                 handleClickChat(conversation._id);
               }}
-              className="cursor-pointer"
+              className="cursor-pointer transform transition-all duration-500 p-2 hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:scale-[1.2] hover:opacity-[0.4]"
             >
               <AvatarFromMessages member={member} key={conversation._id} />
             </div>
@@ -116,7 +103,7 @@ export const MessagesList = ({
               onClick={() => {
                 handleClickFriend(friend._id);
               }}
-              className="cursor-pointer"
+              className="cursor-pointer rounded-3xl transform transition-all duration-500 p-2 hover:bg-gradient-to-r from-cyan-500 to-blue-500 hover:scale-[1.2]"
             >
               <AvatarFromMessages member={friend} />
             </div>

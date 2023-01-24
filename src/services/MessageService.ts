@@ -37,7 +37,6 @@ export const MessageService = {
   },
 
   async createConversation(receiverId: string, senderId: string) {
-    console.log(receiverId, senderId, "payload");
     return fetch(`http://localhost:8080/create/channel`, {
       method: "POST",
       headers: {
@@ -50,5 +49,21 @@ export const MessageService = {
         return apiResponse;
       })
       .catch((error) => error);
+  },
+
+  async sendFile(file: File, conversationId: string, sender: string) {
+    const data = new FormData();
+    data.append("files", file);
+    data.append("conversationId", conversationId);
+    data.append("sender", sender);
+
+    return fetch(`http://localhost:8080/upload-images`, {
+      method: "POST",
+      body: data,
+    })
+      .then(async (result) => {
+        return await result.json();
+      })
+      .catch((error) => console.log(error, "erro"));
   },
 };

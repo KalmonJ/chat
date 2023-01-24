@@ -2,8 +2,9 @@ import create from "zustand";
 
 export type Message = {
   conversationId: string;
-  text: string;
+  text: string | undefined;
   sender: string;
+  image: string | undefined;
   _id: string;
 };
 

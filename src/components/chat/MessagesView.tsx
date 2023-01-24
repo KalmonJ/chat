@@ -6,22 +6,27 @@ import { SendMessageIcon } from "components/icons/SendMessageIcon";
 import { SendVoiceMessageIcon } from "components/icons/SendVoiceMessageIcon";
 import { useConversationId } from "hooks/useConversationId";
 import { useMessages } from "hooks/useMessages";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useSocket } from "./../../hooks/useSocket";
 import { useUser } from "./../../hooks/useUser";
+import { Transition } from "react-transition-group";
+import { useRef } from "react";
+import { MessageService } from "services/MessageService";
 import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
-import { Transition } from "react-transition-group";
+import Image from "next/image";
 
 export const MessagesView = () => {
   const [message, setMessage] = useState("");
+  const [openEmoji, setOpenEmoji] = useState(false);
   const { socket } = useSocket();
+  const setMessages = useMessages((state) => state.setMessages);
   const user = useUser((state) => state.user);
   const conversationId = useConversationId((state) => state.conversationId);
   const messages = useMessages((state) => state.messages);
   const saveMessages = useMessages((state) => state.setMessages);
-  const [openEmoji, setOpenEmoji] = useState(false);
+  const sendFileRef = useRef<HTMLInputElement | null>();
 
   useEffect(() => {
     socket.on("messages", (data) => {
@@ -29,7 +34,7 @@ export const MessagesView = () => {
     });
   }, [socket, saveMessages, messages]);
 
-  const handlePressEnter = () => {
+  const handleSendMessage = () => {
     socket.emit("message", {
       conversationId: conversationId,
       text: message,
@@ -37,6 +42,25 @@ export const MessagesView = () => {
     });
 
     setMessage("");
+  };
+
+  const handleSendDocument = () => {
+    sendFileRef.current?.click();
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const fileObject = e.target.files && e.target.files[0];
+
+    if (!fileObject) {
+      return;
+    }
+
+    const newMessage = await MessageService.sendFile(
+      fileObject,
+      conversationId,
+      user.uid
+    );
+    setMessages([...messages, newMessage.response]);
   };
 
   return (
@@ -49,9 +73,21 @@ export const MessagesView = () => {
               message.sender === user.uid ? "self-end" : "self-start"
             }`}
           >
-            <span className="text-caption font-medium font-DM-Sans text-sm">
-              {message.text}
-            </span>
+            {!!message.text && !message.image && (
+              <span className="text-caption font-medium font-DM-Sans text-sm">
+                {message.text}
+              </span>
+            )}
+
+            {message.image && (
+              <Image
+                src={message.image}
+                width={100}
+                height={100}
+                loading="lazy"
+                alt={message._id}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -91,7 +127,7 @@ export const MessagesView = () => {
               placeholder="Send message..."
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  handlePressEnter();
+                  handleSendMessage();
                 }
               }}
               onChange={(e) => {
@@ -99,18 +135,35 @@ export const MessagesView = () => {
               }}
             />
             <div className="flex items-center gap-4">
+              <input
+                type="file"
+                ref={(ref) => (sendFileRef.current = ref)}
+                className="hidden"
+                multiple
+                onChange={handleFileChange}
+              />
               <SendDocumentIcon
                 className="cursor-pointer hidden md:block"
                 width={28}
+                onClick={handleSendDocument}
               />
+
               <SendEmojiIcon
                 width={28}
+                role="button"
                 className="cursor-pointer"
                 onClick={() => {
                   setOpenEmoji(!openEmoji);
                 }}
               />
-              <SendMessageIcon className="cursor-pointer" width={28} />
+              <SendMessageIcon
+                role="button"
+                className="cursor-pointer"
+                width={28}
+                onClick={() => {
+                  handleSendMessage();
+                }}
+              />
               <SendLocationIcon
                 className="cursor-pointer hidden md:block"
                 width={28}
