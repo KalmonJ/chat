@@ -15,6 +15,14 @@
   .input-header {
     @apply bg-bg-input rounded-[7px] h-[44px] max-w-[290px] w-full focus-visible:outline-none px-3 text-description;
   }
+
+  .hoverAnimation {
+    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 hover:bg-gradient-to-r from-cyan-500 to-blue-500;
+  }
+
+  .selectedVariant {
+    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 bg-gradient-to-r from-cyan-500 to-blue-500;
+  }
 }
 
 .epr-preview {

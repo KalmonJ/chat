@@ -12,11 +12,10 @@ import { useUser } from "./../../hooks/useUser";
 import { Transition } from "react-transition-group";
 import { useRef } from "react";
 import { MessageService } from "services/MessageService";
+import { MessageBallon } from "./MessageBallon";
 import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
-import Image from "next/image";
-import { MessageBallon } from "./MessageBallon";
 
 export const MessagesView = () => {
   const [message, setMessage] = useState("");

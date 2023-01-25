@@ -1,6 +1,6 @@
 import { Message } from "hooks/useMessages";
-import Image from "next/image";
 import { User } from "services/UserService";
+import Image from "next/image";
 
 interface MessageBallonProps {
   message: Message;
@@ -14,13 +14,13 @@ export const MessageBallon = ({ message, user }: MessageBallonProps) => {
       className={`p-4 bg-header mt-1 rounded-lg w-fit ${
         message.sender === user.uid ? "self-end" : "self-start"
       }`}
+      role="listitem"
     >
       {!!message.text && !message.image && (
         <span className="text-caption font-medium font-DM-Sans text-sm">
           {message.text}
         </span>
       )}
-
       {message.image && (
         <Image
           src={message.image}

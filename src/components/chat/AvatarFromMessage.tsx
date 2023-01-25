@@ -3,12 +3,12 @@ import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
 
 export interface AvatarFromMessagesProps {
-  member: UserCoversation | User;
+  member: UserCoversation | User | UserCoversation;
 }
 
 export const AvatarFromMessages = ({ member }: AvatarFromMessagesProps) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" tabIndex={1}>
       <div className="mr-2">
         <Avatar profileImage={member.profileImage} username={member.username} />
       </div>

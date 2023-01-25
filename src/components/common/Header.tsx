@@ -36,18 +36,19 @@ export const Header = () => {
           </div>
           {!!search && (
             <div className="w-[250px] min-h-[100px] p-2 bg-header z-50 absolute bottom-[-95px] rounded-b-md flex flex-col">
-              {filteredUsers.map((user) => {
+              {filteredUsers.map((friendSugestion) => {
                 return (
                   <div
-                    key={user?._id}
+                    key={friendSugestion?._id}
                     className="flex items-center justify-between"
                     role="button"
                     onClick={() => {
-                      handleClick(user?._id);
+                      handleClick(friendSugestion?._id);
                     }}
                   >
                     <span className="text-description font-DM-Sans font-bold">
-                      {user.username}
+                      {friendSugestion.username !== user.uid &&
+                        friendSugestion.username}
                     </span>
                     <FaPlus color="white" className="cursor-pointer" />
                   </div>
