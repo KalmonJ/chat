@@ -1,9 +1,14 @@
-import { SetStateAction } from "react";
+import { useSocket } from "hooks/useSocket";
+import { SetStateAction, useEffect, useState } from "react";
 import { Conversation } from "services/MessageService";
 import { UserCoversation } from "utils/extractUserFromMembers";
-import { AvatarFromMessages } from "./AvatarFromMessage";
+import {
+  AvatarFromMessages,
+  AvatarFromMessagesProps,
+} from "./AvatarFromMessage";
 
-interface MessageChannelPreviewProps {
+interface MessageChannelPreviewProps
+  extends Pick<AvatarFromMessagesProps, "last_message"> {
   handleClickChat?: (conversationId: string) => void;
   handleClickFriend?: (friendId: string) => void;
   setSelected: (value: SetStateAction<boolean>) => void;
@@ -23,6 +28,7 @@ export const MessageChannelPreview = ({
   entity,
   selectedFriend,
   handleClickFriend,
+  last_message,
 }: MessageChannelPreviewProps) => {
   return (
     <div
@@ -45,9 +51,14 @@ export const MessageChannelPreview = ({
         selected && entity._id === selectedFriend
           ? "selectedVariant"
           : !selected && entity._id === selectedFriend && "selectedVariant"
-      }`}
+      } mr-2`}
     >
-      <AvatarFromMessages member={member} key={entity._id} />
+      <AvatarFromMessages
+        member={member}
+        last_message={last_message}
+        key={entity._id}
+        date={undefined}
+      />
     </div>
   );
 };

@@ -19,7 +19,7 @@ export const Menu = () => {
           sideOffset={5}
         >
           <DropdownPrimitive.Item className="outline-none cursor-pointer">
-            Hello
+            Logout
           </DropdownPrimitive.Item>
         </DropdownPrimitive.Content>
       </DropdownPrimitive.Portal>

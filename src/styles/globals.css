@@ -28,3 +28,18 @@
 .epr-preview {
   display: none !important;
 }
+
+*::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+  background: #768396; /* color of the tracking area */
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #050505; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid #050505; /* creates padding around scroll thumb */
+}
