@@ -10,15 +10,17 @@ import { MessageChannelPreview } from "./MessageChannelPreview";
 import { FaAddressBook } from "react-icons/fa";
 import { useEffect } from "react";
 import { useSocket } from "hooks/useSocket";
+import { MessageViewProps } from "./MessagesView";
+
+interface MessageListProps extends MessageViewProps {
+  conversations: Conversation[];
+}
 
 export const MessagesList = ({
   conversations,
-}: {
-  conversations: Conversation[];
-}) => {
-  const setConversationId = useConversationId(
-    (state) => state.setConversationId
-  );
+  setOpenChat,
+}: MessageListProps) => {
+  const { setConversationId, setMember } = useConversationId();
   const [selected, setSelected] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState("");
   const userLogged = useUser((state) => state.user);
@@ -40,10 +42,14 @@ export const MessagesList = ({
   }, [socket, updatedConversation]);
 
   const handleClickChat = async (conversationId: string) => {
-    setConversationId(conversationId);
     const messages = await MessageService.getMessages(conversationId);
-    console.log(messages, "messages");
+    const [{ members }] = updatedConversation.filter(
+      (conv) => conv._id === conversationId
+    );
+    const [member] = extractUserFromMembers(members, userLogged);
     saveMessages(messages);
+    setConversationId(conversationId);
+    setMember(member);
   };
 
   const handleClickFriend = async (userId: string) => {
@@ -75,8 +81,8 @@ export const MessagesList = ({
   };
 
   return (
-    <div className="flex w-screen flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px]  bg-messages">
-      <div className="pt-10 sm:pt-10 mt-11 md:mt-10 h-[849px] w-full flex flex-col gap-6">
+    <div className="flex w-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
+      <div className="pt-10 sm:pt-10 sm:mt-11 md:mt-10 h-screen md:h-full w-full flex flex-col gap-6">
         {!openContacts && (
           <>
             <div className="flex items-center">
@@ -101,9 +107,9 @@ export const MessagesList = ({
                   conversation.members,
                   userLogged
                 );
-
                 return (
                   <MessageChannelPreview
+                    setOpenChat={setOpenChat}
                     key={conversation._id}
                     entity={conversation}
                     handleClickChat={handleClickChat}
@@ -150,6 +156,7 @@ export const MessagesList = ({
                 ))}
               {userLogged?.friends?.map((friend) => (
                 <MessageChannelPreview
+                  setOpenChat={setOpenChat}
                   key={friend._id}
                   entity={friend}
                   handleClickFriend={handleClickFriend}

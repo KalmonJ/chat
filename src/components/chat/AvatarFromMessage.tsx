@@ -1,15 +1,13 @@
 import { Avatar } from "components/common/Avatar";
 import { Message } from "hooks/useMessages";
-import moment from "moment";
 import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
 import { FormatDate } from "utils/formatDate";
 import { MessageChannelPreviewProps } from "./MessageChannelPreview";
 
 export interface AvatarFromMessagesProps
-  extends Pick<
-    MessageChannelPreviewProps,
-    "selected" | "entity" | "selectedFriend"
+  extends Partial<
+    Pick<MessageChannelPreviewProps, "selected" | "entity" | "selectedFriend">
   > {
   member: UserCoversation | User | UserCoversation;
   last_message: Message | undefined;
@@ -22,8 +20,6 @@ export const AvatarFromMessages = ({
   selected,
   selectedFriend,
 }: AvatarFromMessagesProps) => {
-  console.log(entity, member, "created");
-
   return (
     <div className="flex items-center" tabIndex={1}>
       <div className="mr-2">
@@ -36,15 +32,16 @@ export const AvatarFromMessages = ({
           </h4>
           <span className="text-hour font-DM-Sans font-medium text-[13px]">
             {!!last_message?.text &&
+              entity &&
               last_message.conversationId === entity._id &&
               FormatDate(last_message.updatedAt)}
           </span>
         </div>
         <span
           className={`font-DM-Sans text-sm w-full leading-4 ${
-            selected && selectedFriend === entity._id
+            selected && entity && selectedFriend === entity._id
               ? "text-white font-bold"
-              : !selected && selectedFriend === entity._id
+              : !selected && entity && selectedFriend === entity._id
               ? "text-white font-bold"
               : "text-hour font-normal"
           }`}

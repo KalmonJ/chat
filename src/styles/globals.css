@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap");
 
 @layer components {
@@ -13,7 +14,7 @@
   }
 
   .input-header {
-    @apply bg-bg-input rounded-[7px] h-[44px] max-w-[290px] w-full focus-visible:outline-none px-3 text-description;
+    @apply bg-bg-input rounded-[7px] h-[44px] max-w-[290px] w-full min-w-[150px] focus-visible:outline-none px-3 text-description;
   }
 
   .hoverAnimation {

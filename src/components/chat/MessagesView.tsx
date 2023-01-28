@@ -1,5 +1,5 @@
 import { useMessages } from "hooks/useMessages";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useSocket } from "./../../hooks/useSocket";
 import { useUser } from "./../../hooks/useUser";
 import { Transition } from "react-transition-group";
@@ -8,8 +8,13 @@ import { InputMessage } from "./InputMessage";
 import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
+import { MessageViewHeader } from "./MessageViewHeader";
 
-export const MessagesView = () => {
+export interface MessageViewProps {
+  setOpenChat?: Dispatch<SetStateAction<boolean>>;
+}
+
+export const MessagesView = ({ setOpenChat }: MessageViewProps) => {
   const [openEmoji, setOpenEmoji] = useState(false);
   const { socket } = useSocket();
   const [message, setMessage] = useState("");
@@ -24,8 +29,9 @@ export const MessagesView = () => {
   }, [socket, saveMessages, messages]);
 
   return (
-    <div className="hidden md:flex bg-group  justify-start w-full h-full flex-col overflow-y-hidden">
-      <div className=" w-full overflow-auto mt-[77px] p-12 flex grow h-[500px] flex-col">
+    <div className="absolute flex md:static md:flex bg-group justify-center w-full h-screen flex-col overflow-y-hidden">
+      <MessageViewHeader setOpenChat={setOpenChat} />
+      <div className="w-full overflow-auto md:mt-[10px] p-3 md:p-12 flex grow h-[500px] flex-col">
         {messages.map((message) => (
           <MessageBallon key={message._id} message={message} user={user} />
         ))}
