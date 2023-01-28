@@ -42,6 +42,7 @@ export const MessagesList = ({
   const handleClickChat = async (conversationId: string) => {
     setConversationId(conversationId);
     const messages = await MessageService.getMessages(conversationId);
+    console.log(messages, "messages");
     saveMessages(messages);
   };
 
@@ -74,16 +75,16 @@ export const MessagesList = ({
   };
 
   return (
-    <div className="flex flex-col p-1 w-[80px] justify-center items-center md:p-6 max-w-[300px] md:w-full bg-messages">
+    <div className="flex w-screen flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px]  bg-messages">
       <div className="pt-10 sm:pt-10 mt-11 md:mt-10 h-[849px] w-full flex flex-col gap-6">
         {!openContacts && (
           <>
             <div className="flex items-center">
-              <h3 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white">
+              <h3 className="flex px-7 md:px-0 text-sm font-bold font-DM-Sans md:text-3xl text-white">
                 Messages
               </h3>
               <FaAddressBook
-                className="grow cursor-pointer"
+                className="md:grow cursor-pointer"
                 fontSize={23}
                 color="lightBlue"
                 onClick={() => {
@@ -113,7 +114,6 @@ export const MessagesList = ({
                     setSelectedFriend={setSelectedFriend}
                     last_message={
                       conversation.messages[conversation.messages.length - 1]
-                        ?.text
                     }
                   />
                 );
@@ -124,11 +124,11 @@ export const MessagesList = ({
         {openContacts && (
           <>
             <div className="flex items-center">
-              <h2 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-3xl text-white ">
+              <h2 className="px-7 md:px-0 flex text-sm font-bold font-DM-Sans md:text-3xl text-white ">
                 Friends
               </h2>
               <FaAddressBook
-                className="grow cursor-pointer"
+                className="md:grow cursor-pointer"
                 fontSize={23}
                 color="lightBlue"
                 onClick={() => {

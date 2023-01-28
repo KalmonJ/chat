@@ -24,7 +24,7 @@ export const MessagesView = () => {
   }, [socket, saveMessages, messages]);
 
   return (
-    <div className="bg-group flex justify-start w-full h-full flex-col overflow-y-hidden">
+    <div className="hidden md:flex bg-group  justify-start w-full h-full flex-col overflow-y-hidden">
       <div className=" w-full overflow-auto mt-[77px] p-12 flex grow h-[500px] flex-col">
         {messages.map((message) => (
           <MessageBallon key={message._id} message={message} user={user} />

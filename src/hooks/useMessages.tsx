@@ -5,6 +5,9 @@ export type Message = {
   text: string | undefined;
   sender: string;
   image: string | undefined;
+  createdAt: Date;
+  updatedAt: Date;
+  messageDate: Date;
   _id: string;
 };
 

@@ -17,11 +17,11 @@
   }
 
   .hoverAnimation {
-    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 hover:bg-gradient-to-r from-cyan-500 to-blue-500;
+    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 hover:bg-[#6e808c66];
   }
 
   .selectedVariant {
-    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 bg-gradient-to-r from-cyan-500 to-blue-500;
+    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 bg-gradient-to-r  from-blue-400 to-blue-500;
   }
 }
 

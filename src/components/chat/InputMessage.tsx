@@ -45,11 +45,14 @@ export const InputMessage = ({
     sendFileRef.current?.click();
   };
 
+  const date = new Date();
+
   const handleSendMessage = () => {
     socket.emit("message", {
       conversationId: conversationId,
       text: message,
       sender: user.uid,
+      messageDate: date,
     });
 
     setMessage("");
