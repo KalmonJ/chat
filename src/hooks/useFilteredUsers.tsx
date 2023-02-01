@@ -1,5 +1,4 @@
 import { ChangeEvent, useMemo, useState } from "react";
-import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
 
 export const useFilteredUsers = (users: UserCoversation[]) => {

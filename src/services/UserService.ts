@@ -24,4 +24,16 @@ export const UserService = {
       .then(async (result) => await result.json())
       .catch((error) => error);
   },
+
+  updateUser(userId: string, updatedUser: User) {
+    return fetch(`http://localhost:8080/update/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUser),
+    })
+      .then(async (result) => await result.json())
+      .catch((error) => error);
+  },
 };

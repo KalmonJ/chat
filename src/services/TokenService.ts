@@ -1,12 +1,13 @@
 import { NextPageContext } from "next";
 import nookies from "nookies";
+import { User } from "./UserService";
 
 type TokenServiceContext = NextPageContext | null;
 
 const key = "client";
 
 export const TokenService = {
-  save(ctx: TokenServiceContext, token: string) {
+  save(ctx: TokenServiceContext, token: string | User) {
     return nookies.set(ctx, key, JSON.stringify(token));
   },
 

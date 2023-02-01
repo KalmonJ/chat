@@ -11,6 +11,6 @@ export const extractUserFromMembers = (
   members: UserCoversation[],
   loggedUser: User
 ) => {
-  const user = members.filter((member) => member._id !== loggedUser.uid);
+  const user = members?.filter((member) => member?._id !== loggedUser?.uid);
   return user;
 };

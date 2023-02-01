@@ -6,11 +6,12 @@ import { useMessages } from "hooks/useMessages";
 import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
 import { useUser } from "hooks/useUser";
 import { useState } from "react";
-import { MessageChannelPreview } from "./MessageChannelPreview";
 import { FaAddressBook } from "react-icons/fa";
 import { useEffect } from "react";
 import { useSocket } from "hooks/useSocket";
 import { MessageViewProps } from "./MessagesView";
+import { FriendList } from "./FriendsList";
+import { MessageChannelPreview } from "./MessageChannelPreview";
 
 interface MessageListProps extends MessageViewProps {
   conversations: Conversation[];
@@ -23,12 +24,12 @@ export const MessagesList = ({
   const { setConversationId, setMember } = useConversationId();
   const [selected, setSelected] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState("");
-  const userLogged = useUser((state) => state.user);
-  const saveMessages = useMessages((state) => state.setMessages);
-  const [openContacts, setOpenContacts] = useState(false);
-  const { socket } = useSocket();
   const [updatedConversation, setUpdatedConversation] =
     useState<Conversation[]>(conversations);
+  const [openContacts, setOpenContacts] = useState(false);
+  const { socket } = useSocket();
+  const userLogged = useUser((state) => state.user);
+  const saveMessages = useMessages((state) => state.setMessages);
 
   useEffect(() => {
     socket.on("new.message.listener", async (data) => {
@@ -57,20 +58,21 @@ export const MessagesList = ({
     let conversationFind = {} as Conversation;
 
     updatedConversation.map((conversation) => {
-      conversation.members.map((member) => {
+      if (!conversation.members) {
+        return;
+      }
+      conversation?.members.map((member) => {
         if (member._id === userId) {
           chatAlreadyIsOpen = true;
           conversationFind = conversation;
         }
       });
     });
-
     if (!chatAlreadyIsOpen) {
       const createdConversation = await MessageService.createConversation(
         userId,
         userLogged.uid
       );
-
       return setUpdatedConversation([
         ...updatedConversation,
         createdConversation,
@@ -81,7 +83,7 @@ export const MessagesList = ({
   };
 
   return (
-    <div className="flex w-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
+    <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
       <div className="pt-10 sm:pt-10 sm:mt-11 md:mt-10 h-screen md:h-full w-full flex flex-col gap-6">
         {!openContacts && (
           <>
@@ -102,74 +104,46 @@ export const MessagesList = ({
               <Input placeholder="Search..." />
             </div>
             <div className="h-full flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
-              {updatedConversation?.map((conversation) => {
-                const [member] = extractUserFromMembers(
-                  conversation.members,
-                  userLogged
-                );
-                return (
-                  <MessageChannelPreview
-                    setOpenChat={setOpenChat}
-                    key={conversation._id}
-                    entity={conversation}
-                    handleClickChat={handleClickChat}
-                    member={member}
-                    selected={selected}
-                    selectedFriend={selectedFriend}
-                    setSelected={setSelected}
-                    setSelectedFriend={setSelectedFriend}
-                    last_message={
-                      conversation.messages[conversation.messages.length - 1]
-                    }
-                  />
-                );
-              })}
+              {!!updatedConversation &&
+                updatedConversation?.map((conversation) => {
+                  const [member] = extractUserFromMembers(
+                    conversation?.members,
+                    userLogged
+                  );
+                  return (
+                    <MessageChannelPreview
+                      isFriendList={false}
+                      setOpenChat={setOpenChat}
+                      key={conversation._id}
+                      entity={conversation}
+                      handleClickChat={handleClickChat}
+                      member={member}
+                      selected={selected}
+                      selectedFriend={selectedFriend}
+                      setSelected={setSelected}
+                      setSelectedFriend={setSelectedFriend}
+                      last_message={
+                        conversation.messages[conversation.messages.length - 1]
+                      }
+                    />
+                  );
+                })}
             </div>
           </>
         )}
         {openContacts && (
-          <>
-            <div className="flex items-center">
-              <h2 className="px-7 md:px-0 flex text-sm font-bold font-DM-Sans md:text-3xl text-white ">
-                Friends
-              </h2>
-              <FaAddressBook
-                className="md:grow cursor-pointer"
-                fontSize={23}
-                color="lightBlue"
-                onClick={() => {
-                  setOpenContacts(!openContacts);
-                }}
-              />
-            </div>
-            <div className="hidden md:block">
-              <Input placeholder="Search..." />
-            </div>
-            <ul className="h-full flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
-              {userLogged.friends?.length === 0 ||
-                (!userLogged.friends && (
-                  <div>
-                    <h2 className="hidden md:flex text-sm font-bold font-DM-Sans md:text-sm text-white mt-7">
-                      You don't have any friends yet... 😭
-                    </h2>
-                  </div>
-                ))}
-              {userLogged?.friends?.map((friend) => (
-                <MessageChannelPreview
-                  setOpenChat={setOpenChat}
-                  key={friend._id}
-                  entity={friend}
-                  handleClickFriend={handleClickFriend}
-                  member={friend}
-                  selected={selected}
-                  selectedFriend={selectedFriend}
-                  setSelected={setSelected}
-                  setSelectedFriend={setSelectedFriend}
-                  last_message={undefined}
-                />
-              ))}
-            </ul>
-          </>
+          <FriendList
+            openContacts={openContacts}
+            setOpenContacts={setOpenContacts}
+            isFriendList
+            selected={selected}
+            setOpenChat={setOpenChat}
+            selectedFriend={selectedFriend}
+            setSelectedFriend={setSelectedFriend}
+            setSelected={setSelected}
+            setUpdatedConversation={setUpdatedConversation}
+            handleClickFriend={handleClickFriend}
+          />
         )}
       </div>
     </div>

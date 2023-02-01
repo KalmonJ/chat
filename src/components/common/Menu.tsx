@@ -1,6 +1,6 @@
 import * as DropdownPrimitive from "@radix-ui/react-dropdown-menu";
+import { HiMenu } from "react-icons/hi";
 import { useUser } from "hooks/useUser";
-import { Avatar } from "./Avatar";
 
 export const Menu = () => {
   const loggedUser = useUser((state) => state.user);
@@ -8,18 +8,18 @@ export const Menu = () => {
   return (
     <DropdownPrimitive.Root>
       <DropdownPrimitive.Trigger className="outline-none">
-        <Avatar
-          profileImage={loggedUser.profileImage}
-          username={loggedUser.username}
-        />
+        <HiMenu color="white" fontSize={22} />
       </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Portal>
         <DropdownPrimitive.Content
-          className="min-w-[202px] rounded-md bg-white shadow-lg p-3 animate-slide-down"
+          className="min-w-[30px] mr-8 rounded-md bg-white py-2 shadow-lg animate-slide-down"
           sideOffset={5}
         >
-          <DropdownPrimitive.Item className="outline-none cursor-pointer">
-            Logout
+          <DropdownPrimitive.Item className="outline-none cursor-pointer transition-all py-2 hover:bg-gray-100 px-4 font-DM-Sans font-medium text-sm">
+            Delete messages
+          </DropdownPrimitive.Item>
+          <DropdownPrimitive.Item className="outline-none cursor-pointer transition-all py-2 px-4 hover:bg-gray-100 w-full font-DM-Sans font-medium text-sm">
+            Delete channel
           </DropdownPrimitive.Item>
         </DropdownPrimitive.Content>
       </DropdownPrimitive.Portal>

@@ -1,12 +1,8 @@
 import { Message } from "hooks/useMessages";
-import { useSocket } from "hooks/useSocket";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction } from "react";
 import { Conversation } from "services/MessageService";
 import { UserCoversation } from "utils/extractUserFromMembers";
-import {
-  AvatarFromMessages,
-  AvatarFromMessagesProps,
-} from "./AvatarFromMessage";
+import { AvatarFromMessages } from "./AvatarFromMessages";
 import { MessageViewProps } from "./MessagesView";
 
 export interface MessageChannelPreviewProps extends MessageViewProps {
@@ -14,11 +10,14 @@ export interface MessageChannelPreviewProps extends MessageViewProps {
   handleClickFriend?: (friendId: string) => void;
   setSelected: (value: SetStateAction<boolean>) => void;
   setSelectedFriend: (value: SetStateAction<string>) => void;
-  selectedFriend: string;
+  deleteFriend?: (friendId: string) => void;
+  addFriend?: (userId: string) => void;
+  selectedFriend: string | undefined;
   member: UserCoversation;
   selected: boolean;
   entity: Conversation | UserCoversation;
   last_message: Message | undefined;
+  isFriendList: boolean;
 }
 
 export const MessageChannelPreview = ({
@@ -31,7 +30,10 @@ export const MessageChannelPreview = ({
   selectedFriend,
   handleClickFriend,
   last_message,
+  isFriendList,
   setOpenChat,
+  deleteFriend,
+  addFriend,
 }: MessageChannelPreviewProps) => {
   return (
     <div
@@ -60,6 +62,9 @@ export const MessageChannelPreview = ({
         selected={selected}
         selectedFriend={selectedFriend}
         entity={entity}
+        deleteFriend={deleteFriend}
+        addFriend={addFriend}
+        isFriendList={isFriendList}
       />
     </div>
   );

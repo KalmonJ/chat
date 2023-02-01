@@ -1,6 +1,7 @@
+import { Menu } from "components/common/Menu";
 import { useConversationId } from "hooks/useConversationId";
 import { FaArrowLeft } from "react-icons/fa";
-import { AvatarFromMessages } from "./AvatarFromMessage";
+import { AvatarFromMessages } from "./AvatarFromMessages";
 import { MessageViewProps } from "./MessagesView";
 
 export const MessageViewHeader = ({ setOpenChat }: MessageViewProps) => {
@@ -11,13 +12,21 @@ export const MessageViewHeader = ({ setOpenChat }: MessageViewProps) => {
       <FaArrowLeft
         color="white"
         fontSize={32}
-        className="cursor-pointer md:hidden"
+        className="cursor-pointer mr-3 md:hidden"
         onClick={() => {
           setOpenChat && setOpenChat(false);
         }}
       />
 
-      <AvatarFromMessages member={member} last_message={undefined} />
+      <div className="flex items-center justify-between w-full">
+        <AvatarFromMessages
+          isFriendList={false}
+          member={member}
+          last_message={undefined}
+        />
+
+        <Menu />
+      </div>
     </div>
   );
 };

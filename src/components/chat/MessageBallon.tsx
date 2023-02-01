@@ -12,7 +12,7 @@ export const MessageBallon = ({ message, user }: MessageBallonProps) => {
     <div
       key={message._id}
       className={`p-4 bg-header mt-1 rounded-lg w-fit ${
-        message.sender === user.uid ? "self-end" : "self-start"
+        message.sender === user?.uid ? "self-end" : "self-start"
       }`}
       role="listitem"
     >

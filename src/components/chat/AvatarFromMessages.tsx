@@ -4,13 +4,20 @@ import { User } from "services/UserService";
 import { UserCoversation } from "utils/extractUserFromMembers";
 import { FormatDate } from "utils/formatDate";
 import { MessageChannelPreviewProps } from "./MessageChannelPreview";
+import { FaUserMinus } from "react-icons/fa";
+import { FaUserPlus } from "react-icons/fa";
+import { useUser } from "hooks/useUser";
 
 export interface AvatarFromMessagesProps
   extends Partial<
-    Pick<MessageChannelPreviewProps, "selected" | "entity" | "selectedFriend">
+    Pick<
+      MessageChannelPreviewProps,
+      "selected" | "entity" | "selectedFriend" | "deleteFriend" | "addFriend"
+    >
   > {
   member: UserCoversation | User | UserCoversation;
   last_message: Message | undefined;
+  isFriendList: boolean;
 }
 
 export const AvatarFromMessages = ({
@@ -19,16 +26,33 @@ export const AvatarFromMessages = ({
   entity,
   selected,
   selectedFriend,
+  deleteFriend,
+  addFriend,
+  isFriendList,
 }: AvatarFromMessagesProps) => {
+  const user = useUser((state) => state.user);
+
+  const isMyFriend = () => {
+    const result = user.friends?.reduce((prev, curr) => {
+      if ("_id" in member) prev = curr._id === member._id;
+      return prev;
+    }, false);
+
+    return result;
+  };
+
   return (
     <div className="flex items-center" tabIndex={1}>
       <div className="mr-2">
-        <Avatar profileImage={member.profileImage} username={member.username} />
+        <Avatar
+          profileImage={member?.profileImage}
+          username={member?.username}
+        />
       </div>
       <div className="flex flex-col gap-1 grow mr-4">
         <div className="flex items-center">
           <h4 className=" grow flex text-white font-DM-Sans font-bold text-base leading-4">
-            {member.username}
+            {member?.username}
           </h4>
           <span className="text-hour font-DM-Sans font-medium text-[13px]">
             {!!last_message?.text &&
@@ -51,6 +75,27 @@ export const AvatarFromMessages = ({
           </p>
         </span>
       </div>
+
+      {isFriendList && isMyFriend() && (
+        <FaUserMinus
+          color="#D34141"
+          onClick={() => {
+            if ("_id" in member && deleteFriend) {
+              deleteFriend(member._id);
+            }
+          }}
+        />
+      )}
+      {isFriendList && !isMyFriend() && (
+        <FaUserPlus
+          className="text-blue-500"
+          onClick={() => {
+            if ("_id" in member && addFriend) {
+              addFriend(member._id);
+            }
+          }}
+        />
+      )}
       {/* <div className="hidden absolute right-8 bottom-1 md:flex flex-col gap-1">
         <div className="rounded-full w-4 h-4 bg-notification flex justify-center self-end">
           <span className="text-xs text-white font-bold font-DM-Sans">2</span>
