@@ -1,11 +1,11 @@
 import create from "zustand";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { UserConversation } from "utils/extractUserFromMembers";
 
 type UseConversationId = {
   conversationId: string;
-  member: UserCoversation;
+  member: UserConversation;
   setConversationId: (conversationId: string) => void;
-  setMember: (member: UserCoversation) => void;
+  setMember: (member: UserConversation) => void;
 };
 
 export const useConversationId = create<UseConversationId>((set) => ({
@@ -13,7 +13,7 @@ export const useConversationId = create<UseConversationId>((set) => ({
   setConversationId: (conversationId) => {
     set(() => ({ conversationId }));
   },
-  member: {} as UserCoversation,
+  member: {} as UserConversation,
   setMember: (member) => {
     set(() => ({ member }));
   },
