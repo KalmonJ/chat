@@ -1,4 +1,4 @@
-import { Conversation } from "services/MessageService";
+import { Conversation, MessageService } from "services/MessageService";
 import create from "zustand";
 
 interface UseConversations {
@@ -12,3 +12,19 @@ export const useConversations = create<UseConversations>((set) => ({
     set(() => ({ conversations }));
   },
 }));
+
+export const useHandleConversations = () => {
+  const { conversations, setConversations } = useConversations();
+  const deleteCurrentChannel = async (conversationId: string) => {
+    const updatedList = conversations.filter(
+      (conv) => conv._id !== conversationId
+    );
+    setConversations(updatedList);
+
+    await MessageService.deleteConversation(conversationId);
+  };
+
+  return {
+    deleteCurrentChannel,
+  };
+};

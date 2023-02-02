@@ -1,4 +1,6 @@
 import create from "zustand";
+import { useConversations } from "./useConversations";
+import { MessageService } from "services/MessageService";
 
 export type Message = {
   conversationId: string;
@@ -22,3 +24,29 @@ export const useMessages = create<UseMessages>((set) => ({
     set(() => ({ messages }));
   },
 }));
+
+export const useHandleMessages = () => {
+  const conversations = useConversations((state) => state.conversations);
+
+  const deleteAllMessages = async (conversationId: string) => {
+    const userConversations = [...conversations];
+    const conversationFound = userConversations.find(
+      (conv) => conv._id === conversationId
+    );
+    if (!!conversationFound) {
+      conversationFound.messages = [];
+      const response = await MessageService.deleteAllMessages(
+        conversationId,
+        conversationFound
+      );
+
+      return console.log(response, "resposta do delete all messages");
+    }
+
+    return;
+  };
+
+  return {
+    deleteAllMessages,
+  };
+};

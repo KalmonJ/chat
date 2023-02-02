@@ -6,10 +6,10 @@ import { Transition } from "react-transition-group";
 import { MessageBallon } from "./MessageBallon";
 import { InputMessage } from "./InputMessage";
 import { MessageViewHeader } from "./MessageViewHeader";
+import { useConversationId } from "hooks/useConversationId";
 import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
-import { useConversationId } from "hooks/useConversationId";
 
 export interface MessageViewProps {
   setOpenChat?: Dispatch<SetStateAction<boolean>>;
@@ -69,7 +69,7 @@ export const MessagesView = ({ setOpenChat }: MessageViewProps) => {
             });
           }}
         >
-          <div className="absolute top-[-450px] animate-slide-up right-56">
+          <div className="right-4 absolute top-[-450px] animate-slide-up md:right-56">
             <EmojiPicker
               theme={"dark" as Theme.Theme.DARK}
               lazyLoadEmojis

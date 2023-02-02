@@ -2,18 +2,19 @@ import { MessagesList } from "components/chat/MessagesList";
 import { MessagesView } from "components/chat/MessagesView";
 import { Navbar } from "components/common/Navbar";
 import { useAllUsers } from "hooks/useAllUsers";
+import { useConversations } from "hooks/useConversations";
 import { useMediaQuery } from "hooks/useMediaQuery";
 import { NextPageContext } from "next";
 import { useEffect, useState } from "react";
 import { Conversation, MessageService } from "services/MessageService";
 import { User, UserService } from "services/UserService";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { UserConversation } from "utils/extractUserFromMembers";
 import { useUser } from "./../hooks/useUser";
 
 interface ChatPageProps {
   currentUser: User;
   conversations: Conversation[];
-  allUsers: UserCoversation[];
+  allUsers: UserConversation[];
 }
 
 export async function getServerSideProps(ctx: NextPageContext) {
@@ -33,13 +34,22 @@ export async function getServerSideProps(ctx: NextPageContext) {
 export const Chat = (props: ChatPageProps) => {
   const setUser = useUser((state) => state.setUser);
   const setAllUsers = useAllUsers((state) => state.setAllUsers);
-  const [openChat, setOpenChat] = useState(false);
   const match = useMediaQuery("(max-width: 770px)");
+  const setConversations = useConversations((state) => state.setConversations);
+  const [openChat, setOpenChat] = useState(false);
 
   useEffect(() => {
     setUser(props.currentUser);
     setAllUsers(props.allUsers);
-  }, [props.currentUser, setUser, props.allUsers, setAllUsers]);
+    setConversations(props.conversations);
+  }, [
+    props.currentUser,
+    setUser,
+    props.allUsers,
+    setAllUsers,
+    props.conversations,
+    setConversations,
+  ]);
 
   return (
     <div className="flex flex-col">

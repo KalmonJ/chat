@@ -96,6 +96,7 @@ export const InputMessage = ({
             ref={(ref) => (sendFileRef.current = ref)}
             className="hidden"
             multiple
+            accept="image/*"
             onChange={handleFileChange}
           />
           <SendDocumentIcon

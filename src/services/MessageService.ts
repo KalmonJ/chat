@@ -62,4 +62,27 @@ export const MessageService = {
       })
       .catch((error) => console.log(error, "erro"));
   },
+
+  async deleteAllMessages(conversationId: string, conversation: Conversation) {
+    return fetch(`http://localhost:8080/channel/update/${conversationId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(conversation),
+    })
+      .then(async (result) => {
+        return await result.json();
+      })
+      .catch((err) => err);
+  },
+
+  async deleteConversation(conversationId: string) {
+    return fetch(`/channel/${conversationId}`, {
+      method: "DELETE",
+    })
+      .then(async (result) => await result.json())
+      .catch((err) => err);
+  },
 };
