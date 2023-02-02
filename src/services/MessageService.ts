@@ -1,9 +1,9 @@
 import { Message } from "hooks/useMessages";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { UserConversation } from "utils/extractUserFromMembers";
 
 export interface Conversation {
   _id: string;
-  members: UserCoversation[];
+  members: UserConversation[];
   createdAt: Date;
   updatedAt: Date;
   messages: Message[];
