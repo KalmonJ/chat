@@ -2,13 +2,11 @@
 import { Input } from "components/common/Input";
 import { useAllUsers } from "hooks/useAllUsers";
 import { useFilteredUsers } from "hooks/useFilteredUsers";
-import { useSocket } from "hooks/useSocket";
+import { useHandleFriendList } from "hooks/useHandleFriendList";
 import { useUser } from "hooks/useUser";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { FaAddressBook } from "react-icons/fa";
-import { Conversation, MessageService } from "services/MessageService";
-import { TokenService } from "services/TokenService";
-import { User } from "services/UserService";
+import { Conversation } from "services/MessageService";
 import {
   MessageChannelPreview,
   MessageChannelPreviewProps,
@@ -40,30 +38,11 @@ export const FriendList = ({
   selected,
   setOpenChat,
   setSelected,
-  setUpdatedConversation,
 }: FriendListProps) => {
-  const { setUser, user } = useUser();
-  const { socket } = useSocket();
+  const { user } = useUser();
   const allUsers = useAllUsers((state) => state.allUsers);
   const { filteredUsers, handleChange, search } = useFilteredUsers(allUsers);
-
-  const deleteFriend = (friendId: string) => {
-    const friendList = [...user.friends];
-    const currentUser = { ...user };
-    const newFriendList = friendList.filter(
-      (friend) => friend._id !== friendId
-    );
-    currentUser["friends"] = newFriendList;
-    setUser(currentUser);
-    TokenService.save(null, currentUser);
-    updateUser(currentUser);
-  };
-
-  const updateUser = (currentUser: User) => {
-    socket.emit("deleteFriend", currentUser);
-  };
-
-  const addFriend = (userId: string) => {};
+  const { addFriend, deleteFriend } = useHandleFriendList();
 
   return (
     <>

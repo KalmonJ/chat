@@ -1,12 +1,13 @@
 import { Avatar } from "components/common/Avatar";
 import { Message } from "hooks/useMessages";
 import { User } from "services/UserService";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { UserConversation } from "utils/extractUserFromMembers";
 import { FormatDate } from "utils/formatDate";
 import { MessageChannelPreviewProps } from "./MessageChannelPreview";
 import { FaUserMinus } from "react-icons/fa";
 import { FaUserPlus } from "react-icons/fa";
 import { useUser } from "hooks/useUser";
+import { isMyFriend } from "utils/isMyFriend";
 
 export interface AvatarFromMessagesProps
   extends Partial<
@@ -15,7 +16,7 @@ export interface AvatarFromMessagesProps
       "selected" | "entity" | "selectedFriend" | "deleteFriend" | "addFriend"
     >
   > {
-  member: UserCoversation | User | UserCoversation;
+  member: UserConversation | User;
   last_message: Message | undefined;
   isFriendList: boolean;
 }
@@ -31,15 +32,9 @@ export const AvatarFromMessages = ({
   isFriendList,
 }: AvatarFromMessagesProps) => {
   const user = useUser((state) => state.user);
+  const areadyExists = isMyFriend(user, member as UserConversation);
 
-  const isMyFriend = () => {
-    const result = user.friends?.reduce((prev, curr) => {
-      if ("_id" in member) prev = curr._id === member._id;
-      return prev;
-    }, false);
-
-    return result;
-  };
+  console.log(areadyExists, "já existe");
 
   return (
     <div className="flex items-center" tabIndex={1}>
@@ -76,7 +71,7 @@ export const AvatarFromMessages = ({
         </span>
       </div>
 
-      {isFriendList && isMyFriend() && (
+      {isFriendList && areadyExists && (
         <FaUserMinus
           color="#D34141"
           onClick={() => {
@@ -86,12 +81,12 @@ export const AvatarFromMessages = ({
           }}
         />
       )}
-      {isFriendList && !isMyFriend() && (
+      {isFriendList && !areadyExists && (
         <FaUserPlus
           className="text-blue-500"
           onClick={() => {
             if ("_id" in member && addFriend) {
-              addFriend(member._id);
+              addFriend(member);
             }
           }}
         />

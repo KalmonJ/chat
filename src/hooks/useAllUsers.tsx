@@ -1,15 +1,18 @@
-import { User } from "services/UserService";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { TokenService } from "services/TokenService";
+import { UserConversation } from "utils/extractUserFromMembers";
 import create from "zustand";
 
 type UseAllUsers = {
-  allUsers: UserCoversation[];
-  setAllUsers: (allUsers: UserCoversation[]) => void;
+  allUsers: UserConversation[];
+  setAllUsers: (allUsers: UserConversation[]) => void;
 };
 
 export const useAllUsers = create<UseAllUsers>((set) => ({
-  allUsers: [] as UserCoversation[],
+  allUsers: [] as UserConversation[],
   setAllUsers: (allUsers) => {
+    const user = TokenService.get(null);
+    const index = allUsers.findIndex((chatUser) => chatUser._id === user.uid);
+    allUsers.splice(index, 1);
     set(() => ({ allUsers }));
   },
 }));

@@ -1,7 +1,7 @@
 import { Message } from "hooks/useMessages";
 import { SetStateAction } from "react";
 import { Conversation } from "services/MessageService";
-import { UserCoversation } from "utils/extractUserFromMembers";
+import { UserConversation } from "utils/extractUserFromMembers";
 import { AvatarFromMessages } from "./AvatarFromMessages";
 import { MessageViewProps } from "./MessagesView";
 
@@ -11,11 +11,11 @@ export interface MessageChannelPreviewProps extends MessageViewProps {
   setSelected: (value: SetStateAction<boolean>) => void;
   setSelectedFriend: (value: SetStateAction<string>) => void;
   deleteFriend?: (friendId: string) => void;
-  addFriend?: (userId: string) => void;
+  addFriend?: (newFriend: UserConversation) => void;
   selectedFriend: string | undefined;
-  member: UserCoversation;
+  member: UserConversation;
   selected: boolean;
-  entity: Conversation | UserCoversation;
+  entity: Conversation | UserConversation;
   last_message: Message | undefined;
   isFriendList: boolean;
 }
