@@ -44,3 +44,14 @@
   border-radius: 20px; /* roundness of the scroll thumb */
   border: 3px solid #050505; /* creates padding around scroll thumb */
 }
+
+.EmojiPickerReact {
+  width: 100% !important;
+  background: #212229 !important;
+}
+
+@media screen and (max-width: 1250px) {
+  .aside.EmojiPickerReact {
+    width: 400px !important;
+  }
+}

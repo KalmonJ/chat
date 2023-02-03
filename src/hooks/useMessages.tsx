@@ -27,6 +27,7 @@ export const useMessages = create<UseMessages>((set) => ({
 
 export const useHandleMessages = () => {
   const conversations = useConversations((state) => state.conversations);
+  const setMessages = useMessages((state) => state.setMessages);
 
   const deleteAllMessages = async (conversationId: string) => {
     const userConversations = [...conversations];
@@ -39,6 +40,8 @@ export const useHandleMessages = () => {
         conversationId,
         conversationFound
       );
+
+      setMessages([]);
 
       return console.log(response, "resposta do delete all messages");
     }
