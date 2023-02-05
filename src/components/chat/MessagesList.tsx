@@ -25,7 +25,6 @@ export const MessagesList = ({ setOpenChat }: MessageListProps) => {
   const [openContacts, setOpenContacts] = useState(false);
   const { socket } = useSocket();
   const userLogged = useUser((state) => state.user);
-  const { handleClickFriend } = useHandleFriendList();
   const { handleClickChat } = useHandleMessages();
 
   useEffect(() => {
@@ -113,7 +112,6 @@ export const MessagesList = ({ setOpenChat }: MessageListProps) => {
             selectedFriend={selectedFriend}
             setSelectedFriend={setSelectedFriend}
             setSelected={setSelected}
-            handleClickFriend={handleClickFriend}
           />
         )}
       </div>

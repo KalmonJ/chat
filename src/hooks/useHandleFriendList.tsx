@@ -23,7 +23,7 @@ export const useHandleFriendList = () => {
   const { setMember } = useConversationId();
   const { handleClickChat } = useHandleMessages();
 
-  const friendList = [...user.friends];
+  const friendList = [...user?.friends];
   const currentUser = { ...user };
 
   const deleteFriend = (friendId: string) => {

@@ -14,7 +14,6 @@ import {
 export interface FriendListProps
   extends Pick<
     MessageChannelPreviewProps,
-    | "handleClickFriend"
     | "selectedFriend"
     | "setSelectedFriend"
     | "isFriendList"
@@ -31,7 +30,6 @@ export const FriendList = ({
   selectedFriend,
   setOpenContacts,
   setSelectedFriend,
-  handleClickFriend,
   isFriendList,
   selected,
   setOpenChat,
@@ -40,7 +38,7 @@ export const FriendList = ({
   const { user } = useUser();
   const allUsers = useAllUsers((state) => state.allUsers);
   const { filteredUsers, handleChange, search } = useFilteredUsers(allUsers);
-  const { addFriend, deleteFriend } = useHandleFriendList();
+  const { addFriend, deleteFriend, handleClickFriend } = useHandleFriendList();
 
   return (
     <>

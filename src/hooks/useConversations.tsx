@@ -17,7 +17,6 @@ export const useConversations = create<UseConversations>((set) => ({
 export const useHandleConversations = () => {
   const { conversations, setConversations } = useConversations();
   const conversationId = useConversationId((state) => state.conversationId);
-  const setMember = useConversationId((state) => state.setMember);
 
   const deleteCurrentChannel = async (conversationId: string) => {
     const updatedList = conversations.filter(
