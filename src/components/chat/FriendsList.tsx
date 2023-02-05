@@ -6,7 +6,6 @@ import { useHandleFriendList } from "hooks/useHandleFriendList";
 import { useUser } from "hooks/useUser";
 import { Dispatch, SetStateAction } from "react";
 import { FaAddressBook } from "react-icons/fa";
-import { Conversation } from "services/MessageService";
 import {
   MessageChannelPreview,
   MessageChannelPreviewProps,

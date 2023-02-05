@@ -1,8 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Input } from "components/common/Input";
-import { useConversationId } from "./../../hooks/useConversationId";
-import { Conversation, MessageService } from "services/MessageService";
-import { useMessages } from "hooks/useMessages";
+import { useHandleMessages } from "hooks/useMessages";
 import { extractUserFromMembers } from "./../../utils/extractUserFromMembers";
 import { useUser } from "hooks/useUser";
 import { useState } from "react";
@@ -13,11 +11,11 @@ import { MessageViewProps } from "./MessagesView";
 import { FriendList } from "./FriendsList";
 import { MessageChannelPreview } from "./MessageChannelPreview";
 import { useConversations } from "hooks/useConversations";
+import { useHandleFriendList } from "hooks/useHandleFriendList";
 
 interface MessageListProps extends MessageViewProps {}
 
 export const MessagesList = ({ setOpenChat }: MessageListProps) => {
-  const { setConversationId, setMember } = useConversationId();
   const [selected, setSelected] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState("");
   const {
@@ -27,7 +25,8 @@ export const MessagesList = ({ setOpenChat }: MessageListProps) => {
   const [openContacts, setOpenContacts] = useState(false);
   const { socket } = useSocket();
   const userLogged = useUser((state) => state.user);
-  const saveMessages = useMessages((state) => state.setMessages);
+  const { handleClickFriend } = useHandleFriendList();
+  const { handleClickChat } = useHandleMessages();
 
   useEffect(() => {
     socket.on("new.message.listener", async (data) => {
@@ -54,46 +53,6 @@ export const MessagesList = ({ setOpenChat }: MessageListProps) => {
       setUpdatedConversation(conv);
     });
   }, [setUpdatedConversation, socket, updatedConversation]);
-
-  const handleClickChat = async (conversationId: string) => {
-    const messages = await MessageService.getMessages(conversationId);
-    const [{ members }] = updatedConversation.filter(
-      (conv) => conv._id === conversationId
-    );
-    const [member] = extractUserFromMembers(members, userLogged);
-    saveMessages(messages);
-    setConversationId(conversationId);
-    setMember(member);
-  };
-
-  const handleClickFriend = async (userId: string) => {
-    let chatAlreadyIsOpen = false;
-    let conversationFind = {} as Conversation;
-
-    updatedConversation.map((conversation) => {
-      if (!conversation.members) {
-        return;
-      }
-      conversation?.members.map((member) => {
-        if (member._id === userId) {
-          chatAlreadyIsOpen = true;
-          conversationFind = conversation;
-        }
-      });
-    });
-    if (!chatAlreadyIsOpen) {
-      const createdConversation = await MessageService.createConversation(
-        userId,
-        userLogged.uid
-      );
-      return setUpdatedConversation([
-        createdConversation,
-        ...updatedConversation,
-      ]);
-    }
-
-    handleClickChat(conversationFind._id);
-  };
 
   return (
     <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
