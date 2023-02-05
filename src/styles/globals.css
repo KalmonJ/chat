@@ -22,7 +22,7 @@
   }
 
   .selectedVariant {
-    @apply cursor-pointer rounded-3xl h-auto  transform transition-all duration-500 p-2 bg-gradient-to-r  from-blue-400 to-blue-500;
+    @apply cursor-pointer rounded-3xl h-auto outline-none  transform transition-all duration-500 p-2 bg-gradient-to-r  from-blue-400 to-blue-500;
   }
 }
 

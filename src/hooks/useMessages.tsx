@@ -1,6 +1,8 @@
 import create from "zustand";
 import { useConversations } from "./useConversations";
 import { MessageService } from "services/MessageService";
+import { useSocket } from "./useSocket";
+import { useUser } from "hooks/useUser";
 
 export type Message = {
   conversationId: string;
@@ -28,6 +30,7 @@ export const useMessages = create<UseMessages>((set) => ({
 export const useHandleMessages = () => {
   const conversations = useConversations((state) => state.conversations);
   const setMessages = useMessages((state) => state.setMessages);
+  const { socket } = useSocket();
 
   const deleteAllMessages = async (conversationId: string) => {
     const userConversations = [...conversations];
@@ -40,6 +43,10 @@ export const useHandleMessages = () => {
         conversationId,
         conversationFound
       );
+
+      socket.emit("last_state_channel", {
+        channelId: conversationId,
+      });
 
       setMessages([]);
 

@@ -42,6 +42,18 @@ export const MessagesList = ({
     });
   }, [socket, updatedConversation]);
 
+  useEffect(() => {
+    socket.on("updatedChannel", (data) => {
+      const i = updatedConversation.findIndex(
+        (conv) => conv._id === data.conversationId
+      );
+      const conv = [...updatedConversation];
+
+      conv[i] = data;
+      setUpdatedConversation(conv);
+    });
+  }, [socket, updatedConversation]);
+
   const handleClickChat = async (conversationId: string) => {
     const messages = await MessageService.getMessages(conversationId);
     const [{ members }] = updatedConversation.filter(
@@ -83,7 +95,7 @@ export const MessagesList = ({
   };
 
   return (
-    <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
+    <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] backdrop-blur bg-messages">
       <div className="pt-10 sm:pt-10 sm:mt-11 md:mt-10 h-screen md:h-full w-full flex flex-col gap-6">
         {!openContacts && (
           <>
@@ -105,7 +117,7 @@ export const MessagesList = ({
             </div>
             <div className="h-full flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
               {!!updatedConversation &&
-                updatedConversation?.map((conversation) => {
+                updatedConversation?.map((conversation, index) => {
                   const [member] = extractUserFromMembers(
                     conversation?.members,
                     userLogged

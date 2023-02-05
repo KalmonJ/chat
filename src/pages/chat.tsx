@@ -52,8 +52,8 @@ export const Chat = (props: ChatPageProps) => {
   ]);
 
   return (
-    <div className="flex flex-col bg-red-400 items-center">
-      <div className="flex w-full max-w-[1440px]">
+    <div className="flex flex-col bg-neutral-900 bg-cover bg-no-repeat items-center">
+      <div className="flex w-full max-w-[1440px] shadow-login">
         <div className="hidden md:flex">
           <Navbar />
         </div>

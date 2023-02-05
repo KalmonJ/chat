@@ -34,8 +34,6 @@ export const AvatarFromMessages = ({
   const user = useUser((state) => state.user);
   const areadyExists = isMyFriend(user, member as UserConversation);
 
-  console.log(areadyExists, "já existe");
-
   return (
     <div className="flex items-center" tabIndex={1}>
       <div className="mr-2">
