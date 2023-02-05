@@ -12,20 +12,18 @@ import { useSocket } from "hooks/useSocket";
 import { MessageViewProps } from "./MessagesView";
 import { FriendList } from "./FriendsList";
 import { MessageChannelPreview } from "./MessageChannelPreview";
+import { useConversations } from "hooks/useConversations";
 
-interface MessageListProps extends MessageViewProps {
-  conversations: Conversation[];
-}
+interface MessageListProps extends MessageViewProps {}
 
-export const MessagesList = ({
-  conversations,
-  setOpenChat,
-}: MessageListProps) => {
+export const MessagesList = ({ setOpenChat }: MessageListProps) => {
   const { setConversationId, setMember } = useConversationId();
   const [selected, setSelected] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState("");
-  const [updatedConversation, setUpdatedConversation] =
-    useState<Conversation[]>(conversations);
+  const {
+    conversations: updatedConversation,
+    setConversations: setUpdatedConversation,
+  } = useConversations();
   const [openContacts, setOpenContacts] = useState(false);
   const { socket } = useSocket();
   const userLogged = useUser((state) => state.user);
@@ -36,11 +34,14 @@ export const MessagesList = ({
       const i = updatedConversation.findIndex(
         (conv) => conv._id === data.conversationId
       );
+
       const conv = [...updatedConversation];
-      conv[i].messages.push(data);
-      setUpdatedConversation(conv);
+      if (!!conv[i]) {
+        conv[i].messages.push(data);
+        setUpdatedConversation(conv);
+      }
     });
-  }, [socket, updatedConversation]);
+  }, [setUpdatedConversation, socket, updatedConversation]);
 
   useEffect(() => {
     socket.on("updatedChannel", (data) => {
@@ -52,7 +53,7 @@ export const MessagesList = ({
       conv[i] = data;
       setUpdatedConversation(conv);
     });
-  }, [socket, updatedConversation]);
+  }, [setUpdatedConversation, socket, updatedConversation]);
 
   const handleClickChat = async (conversationId: string) => {
     const messages = await MessageService.getMessages(conversationId);
@@ -86,8 +87,8 @@ export const MessagesList = ({
         userLogged.uid
       );
       return setUpdatedConversation([
-        ...updatedConversation,
         createdConversation,
+        ...updatedConversation,
       ]);
     }
 
@@ -95,7 +96,7 @@ export const MessagesList = ({
   };
 
   return (
-    <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] backdrop-blur bg-messages">
+    <div className="flex w-screen h-screen overflow-hidden md:static flex-col p-1 md:w-full justify-center items-center md:p-6 md:max-w-[300px] bg-messages">
       <div className="pt-10 sm:pt-10 sm:mt-11 md:mt-10 h-screen md:h-full w-full flex flex-col gap-6">
         {!openContacts && (
           <>
@@ -153,7 +154,6 @@ export const MessagesList = ({
             selectedFriend={selectedFriend}
             setSelectedFriend={setSelectedFriend}
             setSelected={setSelected}
-            setUpdatedConversation={setUpdatedConversation}
             handleClickFriend={handleClickFriend}
           />
         )}

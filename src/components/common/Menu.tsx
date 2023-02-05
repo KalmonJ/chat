@@ -6,7 +6,8 @@ import { useHandleConversations } from "hooks/useConversations";
 export const Menu = () => {
   // const loggedUser = useUser((state) => state.user);
   const { deleteAllMessages } = useHandleMessages();
-  const { getActiveConversation } = useHandleConversations();
+  const { getActiveConversation, deleteCurrentChannel } =
+    useHandleConversations();
 
   const activeConversation = getActiveConversation();
 
@@ -28,7 +29,12 @@ export const Menu = () => {
           >
             Delete messages
           </DropdownPrimitive.Item>
-          <DropdownPrimitive.Item className="outline-none cursor-pointer transition-all py-2 px-4 hover:bg-gray-100 w-full font-DM-Sans font-medium text-sm">
+          <DropdownPrimitive.Item
+            onClick={() => {
+              deleteCurrentChannel(activeConversation?._id || "");
+            }}
+            className="outline-none cursor-pointer transition-all py-2 px-4 hover:bg-gray-100 w-full font-DM-Sans font-medium text-sm"
+          >
             Delete channel
           </DropdownPrimitive.Item>
         </DropdownPrimitive.Content>

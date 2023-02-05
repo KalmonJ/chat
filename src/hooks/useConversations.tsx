@@ -23,7 +23,6 @@ export const useHandleConversations = () => {
       (conv) => conv._id !== conversationId
     );
     setConversations(updatedList);
-
     await MessageService.deleteConversation(conversationId);
   };
 

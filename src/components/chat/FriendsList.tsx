@@ -24,7 +24,6 @@ export interface FriendListProps
     | "setOpenChat"
   > {
   setOpenContacts: Dispatch<SetStateAction<boolean>>;
-  setUpdatedConversation: Dispatch<SetStateAction<Conversation[]>>;
   openContacts: boolean;
 }
 

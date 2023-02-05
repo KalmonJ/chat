@@ -79,10 +79,14 @@ export const MessageService = {
   },
 
   async deleteConversation(conversationId: string) {
-    return fetch(`/channel/${conversationId}`, {
+    console.log(conversationId, "id da ");
+    return fetch(`http://localhost:8080/channel/delete/${conversationId}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
       .then(async (result) => await result.json())
-      .catch((err) => err);
+      .catch((err) => console.log(err, "ocorreu algum erro"));
   },
 };

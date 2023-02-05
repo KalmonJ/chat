@@ -58,10 +58,7 @@ export const Chat = (props: ChatPageProps) => {
           <Navbar />
         </div>
         <div className="w-full flex">
-          <MessagesList
-            setOpenChat={setOpenChat}
-            conversations={props?.conversations}
-          />
+          <MessagesList setOpenChat={setOpenChat} />
           {openChat && match ? (
             <MessagesView setOpenChat={setOpenChat} />
           ) : !openChat && match ? null : (
