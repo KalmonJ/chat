@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { UserConversation } from "utils/extractUserFromMembers";
 
 type UseConversationId = {

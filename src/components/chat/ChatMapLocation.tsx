@@ -1,38 +1,9 @@
-import { useLocation } from "hooks/useLocation";
-import dynamic from "next/dynamic";
-import { icon } from "leaflet";
-
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((res) => res.MapContainer),
-  {
-    ssr: false,
-  }
-);
-
-const Marker = dynamic(
-  () => import("react-leaflet").then((res) => res.Marker),
-  {
-    ssr: false,
-  }
-);
-
-const Popup = dynamic(() => import("react-leaflet").then((res) => res.Popup), {
-  ssr: false,
-});
-
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((res) => res.TileLayer),
-  {
-    ssr: false,
-  }
-);
-
-import "leaflet/dist/leaflet.css";
+import { Marker, Popup, TileLayer, MapContainer } from "react-leaflet";
 import { Message } from "hooks/useMessages";
+import { icon } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 export const ChatMapLocation = ({ location }: Pick<Message, "location">) => {
-  const coords = useLocation((state) => state.coords);
-
   return (
     <div className="h-[200px] w-[200px]">
       <MapContainer
@@ -52,7 +23,7 @@ export const ChatMapLocation = ({ location }: Pick<Message, "location">) => {
             iconAnchor: [12, 41],
           })}
           position={[location?.lat as number, location?.lng as number]}
-          draggable={true}
+          draggable={false}
         >
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.

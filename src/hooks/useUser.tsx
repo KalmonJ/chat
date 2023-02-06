@@ -1,5 +1,5 @@
 import { User } from "services/UserService";
-import create from "zustand";
+import { create } from "zustand";
 
 interface UseUser {
   user: User;

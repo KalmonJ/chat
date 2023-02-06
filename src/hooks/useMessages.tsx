@@ -1,4 +1,4 @@
-import create from "zustand";
+import {create} from "zustand";
 import { useConversations } from "./useConversations";
 import { MessageService } from "services/MessageService";
 import { useSocket } from "./useSocket";

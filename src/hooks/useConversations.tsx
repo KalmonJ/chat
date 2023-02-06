@@ -1,6 +1,6 @@
 import { Conversation, MessageService } from "services/MessageService";
 import { useConversationId } from "./useConversationId";
-import create from "zustand";
+import { create } from "zustand";
 
 interface UseConversations {
   conversations: Conversation[];

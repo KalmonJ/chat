@@ -2,7 +2,6 @@ import { Message } from "hooks/useMessages";
 import { User } from "services/UserService";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useLocation } from "hooks/useLocation";
 const ChatMapLocation = dynamic(
   () => import("./ChatMapLocation").then((res) => res.ChatMapLocation),
   {
@@ -16,8 +15,6 @@ interface MessageBallonProps {
 }
 
 export const MessageBallon = ({ message, user }: MessageBallonProps) => {
-  const coords = useLocation((state) => state.coords);
-
   return (
     <div
       key={message._id}
