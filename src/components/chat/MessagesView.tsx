@@ -11,18 +11,19 @@ import gsap from "gsap";
 import EmojiPicker from "emoji-picker-react";
 import Theme from "emoji-picker-react/dist/types/exposedTypes";
 import { useConversations } from "./../../hooks/useConversations";
+import { useLocation } from "hooks/useLocation";
 
 export interface MessageViewProps {
   setOpenChat?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const MessagesView = ({ setOpenChat }: MessageViewProps) => {
-  const [openEmoji, setOpenEmoji] = useState(false);
   const { socket } = useSocket();
+  const { conversationId } = useConversationId();
+  const [openEmoji, setOpenEmoji] = useState(false);
   const [message, setMessage] = useState("");
   const user = useUser((state) => state.user);
   const messages = useMessages((state) => state.messages);
-  const { conversationId } = useConversationId();
   const saveMessages = useMessages((state) => state.setMessages);
 
   useEffect(() => {

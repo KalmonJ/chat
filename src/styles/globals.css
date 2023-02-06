@@ -50,6 +50,10 @@
   background: #212229 !important;
 }
 
+.leaflet-default-icon-path {
+  background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png");
+}
+
 @media screen and (max-width: 1250px) {
   .aside.EmojiPickerReact {
     width: 400px !important;

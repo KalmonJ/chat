@@ -30,6 +30,7 @@ export const useHandleFriendList = () => {
     const newFriendList = friendList.filter(
       (friend) => friend._id !== friendId
     );
+
     currentUser["friends"] = newFriendList;
     setUser(currentUser);
     TokenService.save(null, currentUser);
@@ -42,6 +43,7 @@ export const useHandleFriendList = () => {
 
   const addFriend = (newFriend: UserConversation) => {
     const alreadyExists = isMyFriend(user, newFriend);
+
     if (!alreadyExists) {
       friendList.push(newFriend);
       currentUser["friends"] = friendList;
@@ -66,6 +68,7 @@ export const useHandleFriendList = () => {
         }
       });
     });
+
     if (!chatAlreadyIsOpen) {
       const createdConversation: Conversation =
         await MessageService.createConversation(userId, user.uid);
@@ -74,6 +77,7 @@ export const useHandleFriendList = () => {
       setMember(member);
       setUpdatedConversation([createdConversation, ...updatedConversation]);
     }
+
     handleClickChat(conversationFind._id);
   };
 

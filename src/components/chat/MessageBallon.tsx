@@ -1,6 +1,14 @@
 import { Message } from "hooks/useMessages";
 import { User } from "services/UserService";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { useLocation } from "hooks/useLocation";
+const ChatMapLocation = dynamic(
+  () => import("./ChatMapLocation").then((res) => res.ChatMapLocation),
+  {
+    ssr: false,
+  }
+);
 
 interface MessageBallonProps {
   message: Message;
@@ -8,6 +16,8 @@ interface MessageBallonProps {
 }
 
 export const MessageBallon = ({ message, user }: MessageBallonProps) => {
+  const coords = useLocation((state) => state.coords);
+
   return (
     <div
       key={message._id}
@@ -17,7 +27,11 @@ export const MessageBallon = ({ message, user }: MessageBallonProps) => {
       role="listitem"
     >
       {!!message.text && !message.image && (
-        <span className="text-caption font-medium font-DM-Sans text-sm">
+        <span
+          className={`${
+            message.location ? "text-yellow-400" : "text-caption"
+          } font-medium font-DM-Sans text-sm`}
+        >
           {message.text}
         </span>
       )}
@@ -29,6 +43,12 @@ export const MessageBallon = ({ message, user }: MessageBallonProps) => {
           loading="lazy"
           alt={message._id}
         />
+      )}
+
+      {message.location && (
+        <div className="flex justify-end mt-3">
+          <ChatMapLocation location={message.location} />
+        </div>
       )}
     </div>
   );

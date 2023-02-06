@@ -1,6 +1,6 @@
 import { TokenService } from "services/TokenService";
 import { UserConversation } from "utils/extractUserFromMembers";
-import create from "zustand";
+import { create } from "zustand";
 
 type UseAllUsers = {
   allUsers: UserConversation[];

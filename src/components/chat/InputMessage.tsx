@@ -37,6 +37,14 @@ export const InputMessage = ({
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((pos) => {
         setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+
+        socket.emit("message", {
+          conversationId: conversationId,
+          text: "This is my current location:",
+          sender: user.uid,
+          messageDate: new Date(),
+          location: { lat: pos.coords.latitude, lng: pos.coords.longitude },
+        });
       });
     }
   };
@@ -45,14 +53,12 @@ export const InputMessage = ({
     sendFileRef.current?.click();
   };
 
-  const date = new Date();
-
   const handleSendMessage = () => {
     socket.emit("message", {
       conversationId: conversationId,
       text: message,
       sender: user.uid,
-      messageDate: date,
+      messageDate: new Date(),
     });
 
     setMessage("");
