@@ -33,15 +33,8 @@ export const MessageBallon = ({ message, user }: MessageBallonProps) => {
         </span>
       )}
       {message.image && (
-        <Image
-          src={message.image}
-          width={100}
-          height={100}
-          loading="lazy"
-          alt={message._id}
-        />
+        <Image src={message.image} width={100} height={100} alt={message._id} />
       )}
-
       {message.location && (
         <div className="flex justify-end mt-3">
           <ChatMapLocation location={message.location} />

@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from "zustand";
 import { useConversations } from "./useConversations";
 import { MessageService } from "services/MessageService";
 import { useSocket } from "./useSocket";
@@ -64,11 +64,13 @@ export const useHandleMessages = () => {
   };
 
   const handleClickChat = async (conversationId: string) => {
-    const [{ members }] = conversations.filter(
-      (conv) => conv._id === conversationId
-    );
+    const conv = conversations.filter((conv) => conv._id === conversationId);
 
-    const [member] = extractUserFromMembers(members, user);
+    if (!conv[0]?.members) {
+      return;
+    }
+
+    const [member] = extractUserFromMembers(conv[0]?.members, user);
     setMember(member);
     const messages = await MessageService.getMessages(conversationId);
     setConversationId(conversationId);
